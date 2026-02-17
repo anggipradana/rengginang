@@ -52,9 +52,7 @@ This release delivers a **Threat Intelligence module**, **bilingual PDF reportin
 | WPScan Integration | - | WordPress vulnerability scanning |
 | Manual Threat Indicators | - | Add/manage indicators manually |
 | Dashboard TI Overview | - | Pulse count, leak count, risk cards |
-| Telemetry / Phone-Home | GitHub update check | Removed entirely |
-| External Backlinks | Owner's GitHub/wiki | Removed entirely |
-| Branding | reNgine / yogeshojha | ReNgGinaNg (fully independent) |
+| Branding | reNgine | ReNgGinaNg (fully independent) |
 
 ### New API Endpoints
 
