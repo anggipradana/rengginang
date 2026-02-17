@@ -79,66 +79,68 @@ This release delivers a **Threat Intelligence module**, **bilingual PDF reportin
 ```mermaid
 graph TB
     subgraph Client
-        Browser[Web Browser]
+        Browser["Web Browser"]
     end
 
-    subgraph Reverse Proxy
-        Nginx[Nginx :443]
+    subgraph ReverseProxy["Reverse Proxy"]
+        Nginx["Nginx - Port 443"]
     end
 
     subgraph Application
-        Django[Django Web App :8000]
-        Celery[Celery Workers]
-        Beat[Celery Beat Scheduler]
+        Django["Django Web App - Port 8000"]
+        CeleryW["Celery Workers"]
+        Beat["Celery Beat Scheduler"]
     end
 
-    subgraph Data
-        Postgres[(PostgreSQL)]
-        Redis[(Redis)]
+    subgraph DataStores["Data Stores"]
+        Postgres[("PostgreSQL")]
+        Redis[("Redis")]
     end
 
-    subgraph External APIs
-        OTX[OTX AlienVault API]
-        LeakCheck[LeakCheck API v2]
-        WPScan[WPScan API]
-        Ollama[Ollama LLM]
+    subgraph ExternalAPIs["External APIs"]
+        OTX["OTX AlienVault API"]
+        LeakCheck["LeakCheck API v2"]
+        WPScan["WPScan API"]
+        Ollama["Ollama LLM"]
     end
 
-    subgraph Recon Tools
-        Subfinder[Subfinder]
-        Amass[Amass]
-        Nuclei[Nuclei]
-        Nmap[Nmap]
-        HTTPX[HTTPX]
-        Others[50+ Tools]
+    subgraph ReconTools["Recon Tools"]
+        Subfinder["Subfinder"]
+        Amass["Amass"]
+        Nuclei["Nuclei"]
+        Nmap["Nmap"]
+        HTTPX["HTTPX"]
+        Others["50+ Tools"]
     end
 
     Browser -->|HTTPS| Nginx
     Nginx -->|HTTP| Django
     Django -->|Tasks| Redis
-    Redis -->|Queue| Celery
+    Redis -->|Queue| CeleryW
     Beat -->|Scheduled| Redis
     Django --> Postgres
-    Celery --> Postgres
-    Celery --> Recon Tools
+    CeleryW --> Postgres
+    CeleryW --> Subfinder
+    CeleryW --> Nuclei
+    CeleryW --> Nmap
     Django --> OTX
     Django --> LeakCheck
     Django --> WPScan
-    Celery --> Ollama
+    CeleryW --> Ollama
 ```
 
 ### Docker Infrastructure
 
 ```mermaid
 graph LR
-    subgraph Docker Compose Stack
-        proxy[nginx:alpine<br/>:443, :8082]
-        web[ReNgGinaNg-web<br/>:8000]
-        celery[ReNgGinaNg-celery<br/>Workers]
-        beat[ReNgGinaNg-celery-beat<br/>Scheduler]
-        db[(postgres:12.3-alpine<br/>:5432)]
-        redis[(redis:alpine<br/>:6379)]
-        ollama[ollama/ollama<br/>:11434]
+    subgraph DockerStack["Docker Compose Stack"]
+        proxy["nginx - 443, 8082"]
+        web["ReNgGinaNg-web - 8000"]
+        celery["ReNgGinaNg-celery"]
+        beat["ReNgGinaNg-beat"]
+        db[("PostgreSQL - 5432")]
+        redis[("Redis - 6379")]
+        ollama["Ollama - 11434"]
     end
 
     proxy --> web
@@ -159,48 +161,48 @@ sequenceDiagram
     participant OTX as OTX AlienVault
     participant LC as LeakCheck
 
-    U->>W: Click "Refresh All"
+    U->>W: Click Refresh All
     W->>W: Get all project domains
 
     loop For each domain
-        W->>OTX: GET /api/v1/indicators/domain/{domain}/general
+        W->>OTX: GET general indicators
         OTX-->>W: Pulses, reputation, malware
-        W->>OTX: GET /api/v1/indicators/domain/{domain}/passive_dns
+        W->>OTX: GET passive DNS
         OTX-->>W: DNS records
-        W->>LC: GET /api/v2/query/{domain}
+        W->>LC: GET domain query
         LC-->>W: Leaked credentials
         W->>W: Cache results in DB
     end
 
     W-->>U: Update progress bar
     U->>W: View domain detail
-    W-->>U: Show OTX + LeakCheck data in modal
+    W-->>U: Show threat data in modal
 ```
 
 ### PDF Report Generation Flow
 
 ```mermaid
 flowchart TD
-    A[User clicks Generate Report] --> B{Report Settings}
-    B --> C[Language: EN / ID]
-    B --> D[Company Logo]
-    B --> E[Document Number]
-    B --> F[Executive Summary]
+    A["User clicks Generate Report"] --> B{"Report Settings"}
+    B --> C["Language - EN or ID"]
+    B --> D["Company Logo"]
+    B --> E["Document Number"]
+    B --> F["Executive Summary"]
 
-    C --> G[Render HTML Template]
+    C --> G["Render HTML Template"]
     D --> G
     E --> G
     F --> G
 
-    G --> H[WeasyPrint converts to PDF]
-    H --> I[Cover Page with Logo]
-    H --> J[Executive Summary]
-    H --> K[Threat Overview Charts]
-    H --> L[Leaked Credentials Table]
-    H --> M[IoC & CVE Details]
-    H --> N[OTX Pulse Analysis]
+    G --> H["WeasyPrint converts to PDF"]
+    H --> I["Cover Page with Logo"]
+    H --> J["Executive Summary"]
+    H --> K["Threat Overview Charts"]
+    H --> L["Leaked Credentials Table"]
+    H --> M["IoC and CVE Details"]
+    H --> N["OTX Pulse Analysis"]
 
-    I --> O[Download PDF]
+    I --> O["Download PDF"]
     J --> O
     K --> O
     L --> O
@@ -400,29 +402,29 @@ All API endpoints require session authentication. Login via the web interface fi
 
 ```mermaid
 graph TD
-    subgraph Scan API
-        S1[POST /api/scan/start/]
-        S2[GET /api/scan/status/]
-        S3[POST /api/scan/stop/]
+    subgraph ScanAPI["Scan API"]
+        S1["POST - scan start"]
+        S2["GET - scan status"]
+        S3["POST - scan stop"]
     end
 
-    subgraph Target API
-        T1[GET /api/targets/]
-        T2[POST /api/targets/add/]
-        T3[GET /api/subdomains/]
+    subgraph TargetAPI["Target API"]
+        T1["GET - list targets"]
+        T2["POST - add target"]
+        T3["GET - subdomains"]
     end
 
-    subgraph Recon API
-        R1[GET /api/vulnerabilities/]
-        R2[GET /api/endpoints/]
-        R3[GET /api/technologies/]
+    subgraph ReconAPI["Recon API"]
+        R1["GET - vulnerabilities"]
+        R2["GET - endpoints"]
+        R3["GET - technologies"]
     end
 
-    subgraph Threat Intel API
-        TI1[POST /threat-intel/refresh_all]
-        TI2[GET /threat-intel/scan_status]
-        TI3[GET /threat-intel/domain_detail/]
-        TI4[POST /threat-intel/generate-report/]
+    subgraph ThreatIntelAPI["Threat Intel API"]
+        TI1["POST - refresh all domains"]
+        TI2["GET - scan status"]
+        TI3["GET - domain detail"]
+        TI4["POST - generate report"]
     end
 ```
 
