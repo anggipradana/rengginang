@@ -324,13 +324,13 @@ def index(request, slug):
 	else:
 		leak_score = 0
 
-	# Component 3: Malware Association (0-20) — malware linked to domain infra
-	malware_score = min(20, total_malware * 4)
+	# Component 3: Malware Association (0-10) — feed-based, not actual malware in env
+	malware_score = min(10, total_malware * 2)
 
-	# Component 4: Threat Exposure (0-20) — ratio of domains in threat feeds
+	# Component 4: Threat Exposure (0-30) — ratio of domains in threat feeds
 	if total_domains > 0:
 		exposure_ratio = domains_with_threats / total_domains
-		exposure_score = min(20, round(exposure_ratio * 20))
+		exposure_score = min(30, round(exposure_ratio * 30))
 	else:
 		exposure_score = 0
 

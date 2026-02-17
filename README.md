@@ -55,6 +55,24 @@ This release delivers a **Threat Intelligence module**, **bilingual PDF reportin
 | Google Chat Notifications | - | Webhook integration for Google Chat |
 | Branding | reNgine | ReNgGinaNg (fully independent) |
 
+### Risk Score Calculation
+
+The Threat Intelligence Risk Score (0–100) is calculated using four weighted components based on data that is **directly relevant to the domain owner**, not raw feed counts.
+
+| Component | Weight | Source | Description |
+|-----------|--------|--------|-------------|
+| OTX Reputation | 0–25 | OTX AlienVault | Direct reputation assessment of the domain by OTX |
+| Credential Exposure | 0–35 | LeakCheck | Leaked credentials per domain ratio from dark web breaches |
+| Threat Exposure | 0–30 | OTX AlienVault | Ratio of monitored domains appearing in threat intelligence feeds |
+| Malware Association | 0–10 | OTX AlienVault | Feed-based malware references (not actual malware in your environment) |
+
+**Color indicators:**
+- **Green** (0–30): Low risk
+- **Yellow** (31–70): Medium risk
+- **Red** (71–100): High risk
+
+> **Note:** Malware association is intentionally weighted low because OTX data reflects feed-based references, not actual malware found in the monitored domain's infrastructure. Credential exposure carries the highest weight as it represents real, confirmed breaches affecting the domain's users.
+
 ### New API Endpoints
 
 | Endpoint | Method | Description |

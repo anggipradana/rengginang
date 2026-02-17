@@ -205,11 +205,11 @@ def index(request, slug):
     else:
         ti_leak_score = 0
 
-    ti_malware_score = min(20, ti_total_malware * 4)
+    ti_malware_score = min(10, ti_total_malware * 2)
 
     if ti_total_domains > 0:
         ti_exposure_ratio = ti_domains_with_threats / ti_total_domains
-        ti_exposure_score = min(20, round(ti_exposure_ratio * 20))
+        ti_exposure_score = min(30, round(ti_exposure_ratio * 30))
     else:
         ti_exposure_score = 0
 
