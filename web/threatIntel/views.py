@@ -300,8 +300,41 @@ def index(request, slug):
 	domains_with_threats = otx_data.filter(pulse_count__gt=0).count()
 	domains_with_leaks = leak_data.filter(total_found__gt=0).count()
 
-	# Risk score (simple heuristic)
-	risk_score = min(100, total_pulses * 2 + total_malware * 5 + total_leaks * 3)
+	# Risk score — weighted by direct relevance to domain owner
+	# Component 1: OTX Reputation (0-25) — direct domain assessment
+	max_reputation = 0
+	for od in otx_data:
+		if od.reputation and od.reputation > max_reputation:
+			max_reputation = od.reputation
+	reputation_score = min(25, max_reputation * 5)
+
+	# Component 2: Credential Exposure (0-35) — leaked credentials per domain
+	total_domains = domains.count() or 1
+	leaks_per_domain = total_leaks / total_domains
+	if leaks_per_domain >= 50:
+		leak_score = 35
+	elif leaks_per_domain >= 20:
+		leak_score = 25
+	elif leaks_per_domain >= 10:
+		leak_score = 18
+	elif leaks_per_domain >= 5:
+		leak_score = 12
+	elif total_leaks > 0:
+		leak_score = 5
+	else:
+		leak_score = 0
+
+	# Component 3: Malware Association (0-20) — malware linked to domain infra
+	malware_score = min(20, total_malware * 4)
+
+	# Component 4: Threat Exposure (0-20) — ratio of domains in threat feeds
+	if total_domains > 0:
+		exposure_ratio = domains_with_threats / total_domains
+		exposure_score = min(20, round(exposure_ratio * 20))
+	else:
+		exposure_score = 0
+
+	risk_score = min(100, reputation_score + leak_score + malware_score + exposure_score)
 
 	# Build OTX threat table
 	threat_table = []
