@@ -23,7 +23,7 @@
 * feat: Mask API keys Fixes #1213 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1331
 * feat: Allow uploading multiple nuclei patterns #461 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1320
 * feat: Introduce github action for auto updating version and changelog on every release by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1348
-* chores: Removes external IP from reNgine ui by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1350
+* chores: Removes external IP from ReNgGinaNg ui by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1350
 * feat: Implement URL Path Exclusion Feature with Regex Support Fixes #1264 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1354
 * feat: Consistent start scan ui across schedule scan, multiple scans. Now supports import, out of scope subdomains, starting path, excluded path for all types of scan #1357 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1361
 * Update of template.html with conditional statement by @DamianHusted in https://github.com/anggipradana/ReNgGinaNg/pull/1378
@@ -39,16 +39,16 @@
 * Hotfix/workflow cmt1 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1401
 * fix author name by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1403
 * Update of the uninstall.sh script by @DamianHusted in https://github.com/anggipradana/ReNgGinaNg/pull/1385
-* feat: Builtin notification system in reNgine #1392  by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1394
+* feat: Builtin notification system in ReNgGinaNg #1392  by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1394
 * feat: Show what's new popup when update happens and new features are released #1395  by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1405
 * feat: Add Chaos for subdomain enumeration #173 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1406
 * Version 2.1.3 contains a patch for CVE-2024-43381 by @shelbyc in https://github.com/anggipradana/ReNgGinaNg/pull/1412
-* feat: Introducing Bounty Hub, a central hub to import and manage your hackerone programs to reNgine by @null-ref-0000 in https://github.com/anggipradana/ReNgGinaNg/pull/1410
+* feat: Introducing Bounty Hub, a central hub to import and manage your hackerone programs to ReNgGinaNg by @null-ref-0000 in https://github.com/anggipradana/ReNgGinaNg/pull/1410
 * feat: Add ability to delete multiple organizations by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1417
 * feat: Enable bug bounty mode as User Preference to separate bug bounty related features #1411 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1418
 * bug: remove watchmedo usage in production #1419 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1424
 * feat: Create organization when quick adding targets #492 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1425
-* reNgine 2.2.0 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1349
+* ReNgGinaNg 2.2.0 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1349
 
 ## New Contributors
 * @DamianHusted made their first contribution in https://github.com/anggipradana/ReNgGinaNg/pull/1378
@@ -70,7 +70,7 @@
 ### Bug Fixes
 
 * remove redundant docker environment variables by @jxdv in https://github.com/anggipradana/ReNgGinaNg/pull/1353
-* fix: reNgine installation issue due to orjson and langchain #1362 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1363
+* fix: ReNgGinaNg installation issue due to orjson and langchain #1362 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1363
 * #1364 Fix whois lookup and improve performance by executing various modules of whois lookup to run concurrently by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1368
 * chores: Add error handling for the curl command by @gitworkflows in https://github.com/anggipradana/ReNgGinaNg/pull/1367
 * Update Github Actions Workflows by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1369
@@ -117,7 +117,7 @@
 * Fix #1291 Refactor Makefiles for windows/linux to accomodate both v1 and v2 of docker compose by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1302
 * Fix custom_header to accept multiple headers using custom_headers by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1303
 * Handle hash in url, added navigation for Tabs, Fixes #1155 bug href link with html id does not link to the expected url by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1306
-* Optimize uninstall scripts to perform operations only related to reNgine Fixes # 1187 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1307
+* Optimize uninstall scripts to perform operations only related to ReNgGinaNg Fixes # 1187 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1307
 * Added validators to validate URL fixes #1176 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1308
 * Fix LLM/langchain issue for fetching vulnerability report using local LLM model Fixed #1292  local model dont use fetch gpt vulnerability details by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1311
 * Fixes for Clocked and Periodic Scans Fix #1287 Fixes #1015 by @yogeshojha in https://github.com/anggipradana/ReNgGinaNg/pull/1313
@@ -183,7 +183,7 @@
 
 **Release Date: April 20, 2024**
 
-* Fix #1234 reNgine unable to load celery tasks due to mismatched celery and redis versions
+* Fix #1234 ReNgGinaNg unable to load celery tasks due to mismatched celery and redis versions
 
 ## 2.0.4
 
@@ -290,14 +290,14 @@
 
 **Full Changelog**: https://github.com/anggipradana/ReNgGinaNg/compare/v2.0.1...v2.0.2
 
-Once again excellent work on reNgine v2.0.2 by @AnonymousWP, @psyray, @ocervell and everybody else! :rocket: 
+Once again excellent work on ReNgGinaNg v2.0.2 by @AnonymousWP, @psyray, @ocervell and everybody else! :rocket: 
 
 ## 2.0.1
 
 **Release Date: October 24, 2023**
 
 
-2.0.1 fixes a ton of issues in reNgine 2.0.
+2.0.1 fixes a ton of issues in ReNgGinaNg 2.0.
 
 Fixes: 
 1. Prevent duplicating Nuclei vulns for subdomain #1012 @psyray
@@ -329,20 +329,20 @@ Fixes:
 
 ###  Added
  - Projects: Projects allow you to efficiently organize their web application reconnaissance efforts. With this feature, you can create distinct project spaces, each tailored to a specific purpose, such as personal bug bounty hunting, client engagements, or any other specialized recon task.
- - Roles and Permissions: assign distinct roles to your team members: Sys Admin, Penetration Tester, and Auditor—each with precisely defined permissions to tailor their access and actions within the reNgine ecosystem.
- - GPT-powered Report Generation: With the power of OpenAI's GPT, reNgine now provides you with detailed vulnerability descriptions, remediation strategies, and impact assessments.
+ - Roles and Permissions: assign distinct roles to your team members: Sys Admin, Penetration Tester, and Auditor—each with precisely defined permissions to tailor their access and actions within the ReNgGinaNg ecosystem.
+ - GPT-powered Report Generation: With the power of OpenAI's GPT, ReNgGinaNg now provides you with detailed vulnerability descriptions, remediation strategies, and impact assessments.
  - API Vault: This feature allows you to organize your API keys such as OpenAI or Netlas API keys.
  - GPT-powered Attack Surface Generation
  - URL gathering now is much more efficient, removing duplicate endpoints based on similar HTTP Responses, having the same content_lenth, or page_title. Custom duplicate fields can also be set from the scan engine configuration.
  - URL Path filtering while initiating scan: For instance, if we want to scan only endpoints starting with https://example.com/start/, we can pass the /start as a path filter while starting the scan. [@ocervell](https://github.com/ocervell)
- - Expanding Target Concept: reNgine 2.0 now accepts IPs, URLS, etc as targets. (#678, #658) Excellent work by [@ocervell](https://github.com/ocervell)
- - A ton of refactoring on reNgine's core to improve scan efficiency. Massive kudos to [@ocervell](https://github.com/ocervell)
+ - Expanding Target Concept: ReNgGinaNg 2.0 now accepts IPs, URLS, etc as targets. (#678, #658) Excellent work by [@ocervell](https://github.com/ocervell)
+ - A ton of refactoring on ReNgGinaNg's core to improve scan efficiency. Massive kudos to [@ocervell](https://github.com/ocervell)
  - Created a custom celery workflow to be able to run several tasks in parallel that are not dependent on each other, such OSINT task and subdomain discovery will run in parallel, and directory and file fuzzing, vulnerability scan, screenshot gathering etc. will run in parallel after port scan or url fetching is completed. This will increase the efficiency of scans and instead of having one long flow of tasks, they can run independently on their own. [@ocervell](https://github.com/ocervell)
  - Refactored all tasks to run asynchronously [@ocervell](https://github.com/ocervell)
  - Added a stream_command that allows to read the output of a command live: this means the UI is updated with results while the command runs and does not have to wait until the task completes. Excellent work by [@ocervell](https://github.com/ocervell)
  - Pwndb is now replaced by h8mail. [@ocervell](https://github.com/ocervell)
- - Group Scan Results: reNgine 2.0 allows to group of subdomains based on similar page titles and HTTP status, and also vulnerability grouping based on the same vulnerability title and severity.
- - Added Support for Nmap: reNgine 2.0 allows to run Nmap scripts and vuln scans on ports found by Naabu. [@ocervell](https://github.com/ocervell)
+ - Group Scan Results: ReNgGinaNg 2.0 allows to group of subdomains based on similar page titles and HTTP status, and also vulnerability grouping based on the same vulnerability title and severity.
+ - Added Support for Nmap: ReNgGinaNg 2.0 allows to run Nmap scripts and vuln scans on ports found by Naabu. [@ocervell](https://github.com/ocervell)
  - Added support for Shared Scan Variables in Scan Engine Configuration:
     - `enable_http_crawl`: (true/false) You can disable it to be more stealthy or focus on something different than HTTP
     - `timeout`: set timeout for all tasks
@@ -474,7 +474,7 @@ Fixes:
 
     ToolBox will feature most commonly used recon tools. One can use these tools to identify whois, CMSDetection etc without adding targets. Currently, Whois, CMSDetector and CVE ID lookup is supported. More tools to follow up.
 
-- Notify New Releases on reNgine if available
+- Notify New Releases on ReNgGinaNg if available
 - Tools Arsenal Section to feature preinstalled and custom tools
 - Ability to Update preinstalled tools from Tools Arsenal Section
 - Ability to download/add custom tools
@@ -552,7 +552,7 @@ And more...
 - Added whatportis, this allows ports to be displayed as Service Name and Description
 - Recon Data changes, finds new/removed subdomains/endpoints
 - Tagging of targets into Organization
-- Added option to delete all scan results or delete all screenshots inside Settings and reNgine settings
+- Added option to delete all scan results or delete all screenshots inside Settings and ReNgGinaNg settings
 - Support for custom GF patterns and Nuclei Templates
 - Support for editing tool related configuration files (Nuclei, Subfinder, Naabu, amass)
 - Option to Mark Subdomains as important
@@ -574,10 +574,10 @@ And more...
 - Inside Targets list, Recent Scan button has been added to quickly go to the last scan results
 - In target summary, timelin of scan has been added
 - Randomized user agent in HTTPX
-- reNgine will no longer store any recon data apart from that in Database, this includes sorted_subdomains list.txt or any json file
+- ReNgGinaNg will no longer store any recon data apart from that in Database, this includes sorted_subdomains list.txt or any json file
 - aquatone has been replaced with Eyewitness
 - Out of Scope subdomains are no longer part of scan engine, they can be imported before initiating the scan
-- Added script to uninstall reNgine
+- Added script to uninstall ReNgGinaNg
 - Added option to filter targets and scans using organization, scan status, etc
 - Added random user agent in directory scan
 - Added concurrency, rate limit, timeout, retries in Scan Engine YAML
@@ -601,25 +601,25 @@ And more...
 ### Features
 - Nuclei Integration: v0.5 is primarily focused on vulnerability scanner using Nuclei. This was a long pending due and we've finally integrated it.
 
-- Powerful search queries across endpoints, subdomains and vulnerability scan results: reNgine reconnaissance data can now be queried using operators like <,>,&,| and !, namely greater than, less than, and, or, and not. This is extremely useful in querying the recon data. More details can be found at Instructions to perform Queries on Recon data
+- Powerful search queries across endpoints, subdomains and vulnerability scan results: ReNgGinaNg reconnaissance data can now be queried using operators like <,>,&,| and !, namely greater than, less than, and, or, and not. This is extremely useful in querying the recon data. More details can be found at Instructions to perform Queries on Recon data
 
 - Out of scope options: Many of you have been asking for out of scope option. Thanks to Valerio Brussani for his pull request which made it possible for out of scope options. Please check the documentation on how to define out of scope options.
 
-- Official Documentation(WIP): We often get asked on how to use reNgine. For long, we had no official documentation. Finally, I've worked on it and we have the official documentation at rengine.wiki
+- Official Documentation(WIP): We often get asked on how to use ReNgGinaNg. For long, we had no official documentation. Finally, I've worked on it and we have the official documentation at rengginang.wiki
 
 - The documentation is divided into two parts, for Developers and for Penetration Testers. For developers, it's a work in progress. I will keep you all updated throughout the process.
 
 - Redefined Dashboard: We've also made some changes in the Dashboard. The additions include vulnerability scan results, most vulnerable targets, most common vulnerabilities.
 
-- Global Search: This feature has been one of the most requested features for reNgine. Now you can search all the subdomains, endpoints, and vulnerabilities.
+- Global Search: This feature has been one of the most requested features for ReNgGinaNg. Now you can search all the subdomains, endpoints, and vulnerabilities.
 
-- OneForAll Support: reNgine now supports OneForAll for subdomain discovery, it is currently in beta. I am working on how to integrate OneForAll APIKeys and Configuration files.
+- OneForAll Support: ReNgGinaNg now supports OneForAll for subdomain discovery, it is currently in beta. I am working on how to integrate OneForAll APIKeys and Configuration files.
 
 - Configuration Support for subfinder: You will now have ability to add configurations for subfinder as well.
 
 - Timeout option for aquatone: We added timeout options in yaml configuration as a lot of screenshots were missing. You can now define timeout for http, scan and screenshots for timeout in milliseconds.
 
-- Design Changes A lot of design changes has happened in reNgine. Some of which are:
+- Design Changes A lot of design changes has happened in ReNgGinaNg. Some of which are:
 
 - Endpoints Results and Vulnerability Scan Results are now displayed as a separate page, this is to separate the results and decrease the page load time.
 Checkbox next to Subdomains and Vulnerability report list to change the status, this allows you to mark all subdomains and vulnerabilities that you've already completed working on.
@@ -660,4 +660,4 @@ Ability to delete multiple targets and initiate multiple scans.
 - Scrollbar Issue on small screens fixed
 
 ### V0.1 Release 2020-07-08
-- reNgine is released
+- ReNgGinaNg is released

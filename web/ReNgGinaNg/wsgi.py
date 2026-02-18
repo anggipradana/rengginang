@@ -1,5 +1,5 @@
 """
-WSGI config for reNgine project.
+WSGI config for ReNgGinaNg project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

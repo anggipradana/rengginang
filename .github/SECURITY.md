@@ -2,9 +2,9 @@
 # Security Policy
 
 > **[IMPORTANT NOTICE - February 9, 2025]**  
-> reNgine is currently undergoing a major refactoring to address all XSS-related vulnerabilities. While we are committed to security, we are temporarily suspending new XSS vulnerability reports until this refactoring is complete. We will continue to accept and investigate all other types of security vulnerabilities. Thank you for your understanding and continued support in making reNgine more secure.
+> ReNgGinaNg is currently undergoing a major refactoring to address all XSS-related vulnerabilities. While we are committed to security, we are temporarily suspending new XSS vulnerability reports until this refactoring is complete. We will continue to accept and investigate all other types of security vulnerabilities. Thank you for your understanding and continued support in making ReNgGinaNg more secure.
 >
-> Please note that most reported XSS vulnerabilities in reNgine affect on-premise installations with limited exploitability. Nevertheless, we are committed to fixing these issues systematically through our ongoing refactoring effort.
+> Please note that most reported XSS vulnerabilities in ReNgGinaNg affect on-premise installations with limited exploitability. Nevertheless, we are committed to fixing these issues systematically through our ongoing refactoring effort.
 
 
 We appreciate your efforts to responsibly disclose your findings and will make every effort to acknowledge your contributions.
@@ -13,7 +13,7 @@ To report a security vulnerability, please follow these steps:
 
 1. **Do Not** disclose the vulnerability publicly on GitHub issues or any other public forum.
 
-2. Go to the [Security tab](https://github.com/anggipradana/ReNgGinaNg/security) of the reNgine repository.
+2. Go to the [Security tab](https://github.com/anggipradana/ReNgGinaNg/security) of the ReNgGinaNg repository.
 
 3. Click on "Report a vulnerability" to open GitHub's private vulnerability reporting form.
 
@@ -28,11 +28,11 @@ To report a security vulnerability, please follow these steps:
 
 We are committed to working with security researchers to verify and address any potential vulnerabilities reported to us. After fixing the issue, we will publicly acknowledge your responsible disclosure, unless you prefer to remain anonymous.
 
-Thank you for helping to keep reNgine and its users safe!
+Thank you for helping to keep ReNgGinaNg and its users safe!
 
 **What do we expect from security researchers?**
 
-* Patience: Please note that currently I am the only maintainer in reNgine and will take sometime to validate your report. I request your patience throughout the process.
+* Patience: Please note that currently I am the only maintainer in ReNgGinaNg and will take sometime to validate your report. I request your patience throughout the process.
 * Respect Privacy and Security Reports: Please do not disclose any vulnerabilities in public (this also includes github issues) before or after reporting on huntr.dev! That is against the disclosure policy and will not be eligible for monetary rewards.
 
 **What do I get in return?**
@@ -42,7 +42,7 @@ Thank you for helping to keep reNgine and its users safe!
 
 ## Past Security Vulnerabilities
 
-Thanks to these individuals for reporting Security Issues in reNgine.
+Thanks to these individuals for reporting Security Issues in ReNgGinaNg.
 
 ### 2024
 
@@ -71,7 +71,7 @@ Thanks to these individuals for reporting Security Issues in reNgine.
 
 * [LOW] [Stored XSS](https://github.com/anggipradana/ReNgGinaNg/issues/347) on Vulnerability Scan page via URL Parameter, Reported by [Arif Khan, payloadartist](https://twitter.com/payloadartist)
 
-* [LOW] Several Instances of XSS in reNgine 1.0 (#460, #459, #458, #457, #456, #455), Reported by [Binit Ghimire](https://github.com/TheBinitGhimire)
+* [LOW] Several Instances of XSS in ReNgGinaNg 1.0 (#460, #459, #458, #457, #456, #455), Reported by [Binit Ghimire](https://github.com/TheBinitGhimire)
 
 * [LOW] [Stored XSS](https://huntr.dev/bounties/ac07ae2a-1335-4dca-8d55-64adf720bafb/) on GF Pattern via filename, Reported by [nerrorsec](https://github.com/nerrorsec)
 

@@ -31,7 +31,7 @@ jobs:
               if (issueTitle.includes('feat')) {
                 commentBody = `Hey @${author}! 🚀 Thanks for this exciting feature idea!
 
-            We love seeing fresh concepts that could take reNgine to the next level. 🌟
+            We love seeing fresh concepts that could take ReNgGinaNg to the next level. 🌟
             
             To help us understand your vision better, could you:
             
@@ -39,7 +39,7 @@ jobs:
             🎯 Explain the problem it solves or the value it adds
             💡 Share any implementation ideas you might have
             
-            Your input is invaluable in shaping the future of reNgine. Let's innovate together! 💪`;
+            Your input is invaluable in shaping the future of ReNgGinaNg. Let's innovate together! 💪`;
               } else {
                 commentBody = `Hey @${author}! 👋 Thanks for flagging this bug! 🐛🔍
 
@@ -72,9 +72,9 @@ jobs:
               let commentBody;
 
               if (isPRMerged) {
-                commentBody = `Holy smokes! 🤯 You've just made reNgine even more awesome!
+                commentBody = `Holy smokes! 🤯 You've just made ReNgGinaNg even more awesome!
 
-            Your code is now part of the reNgine hall of fame. 🏆 
+            Your code is now part of the ReNgGinaNg hall of fame. 🏆 
             
             Keep the cool ideas coming - maybe next time you'll break the internet! 💻💥
 
@@ -82,9 +82,9 @@ jobs:
               } else {
                 commentBody = `Hey, thanks for your contribution! 🙏
 
-            We appreciate the time and effort you put into this PR. Sadly this is not the right fit for reNgine at the moment.
+            We appreciate the time and effort you put into this PR. Sadly this is not the right fit for ReNgGinaNg at the moment.
             
-            While we couldn't merge it this time, we value your interest in improving reNgine.
+            While we couldn't merge it this time, we value your interest in improving ReNgGinaNg.
             
             Feel free to reach out if you have any questions. Thanks again!`;
               }

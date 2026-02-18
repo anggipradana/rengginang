@@ -19,13 +19,13 @@ if 'CELERY_BROKER' in os.environ:
 	cache = Redis.from_url(os.environ['CELERY_BROKER'])
 
 
-class RengineRequest(Request):
+class ReNgGinaNgRequest(Request):
 	success_msg = ''
 	retry_msg = ''
 
 
-class RengineTask(Task):
-	"""A Celery task that is tracked by reNgine. Save task output files and
+class ReNgGinaNgTask(Task):
+	"""A Celery task that is tracked by ReNgGinaNg. Save task output files and
 	tracebacks to RENGGINANG_RESULTS.
 
 	The custom task meta-options are toggleable through environment variables:
@@ -33,7 +33,7 @@ class RengineTask(Task):
 	RENGGINANG_RECORD_ENABLED:
 	- Create / update ScanActivity object to track statuses.
 	- Send notifications before and after each task (start / end).
-	- Send traceback file to reNgine's Discord channel if an exception happened.
+	- Send traceback file to ReNgGinaNg's Discord channel if an exception happened.
 
 	RENGGINANG_CACHE_ENABLED:
 	- Get result from cache if it exists.
@@ -42,7 +42,7 @@ class RengineTask(Task):
 	RENGGINANG_RAISE_ON_ERROR:
 	- Raise the actual exception when task fails instead of just logging it.
 	"""
-	Request = RengineRequest
+	Request = ReNgGinaNgRequest
 
 	@property
 	def status_str(self):
@@ -60,7 +60,7 @@ class RengineTask(Task):
 		self.description = kwargs.get('description') or ' '.join(self.task_name.split('_')).capitalize()
 		logger = get_task_logger(self.task_name)
 
-		# Get reNgine context
+		# Get ReNgGinaNg context
 		ctx = kwargs.get('ctx', {})
 		self.track = ctx.pop('track', True)
 		self.scan_id = ctx.get('scan_history_id')

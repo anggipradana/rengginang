@@ -199,7 +199,7 @@ generate_worker_command() {
     local concurrency=$2
     local worker_name=$3
     local app=${4:-"ReNgGinaNg.tasks"}
-    local directory=${5:-"/usr/src/app/reNgine/"}
+    local directory=${5:-"/usr/src/app/ReNgGinaNg/"}
 
     local base_command="celery -A $app worker --pool=gevent --optimization=fair --autoscale=$concurrency,1 --loglevel=$loglevel -Q $queue -n $worker_name"
 
@@ -216,7 +216,7 @@ commands=""
 
 # Main scan worker
 if [ "$DEBUG" == "1" ]; then
-    commands+="watchmedo auto-restart --recursive --pattern=\"*.py\" --directory=\"/usr/src/app/reNgine/\" -- celery -A ReNgGinaNg.tasks worker --loglevel=$loglevel --optimization=fair --autoscale=$MAX_CONCURRENCY,$MIN_CONCURRENCY -Q main_scan_queue &"$'\n'
+    commands+="watchmedo auto-restart --recursive --pattern=\"*.py\" --directory=\"/usr/src/app/ReNgGinaNg/\" -- celery -A ReNgGinaNg.tasks worker --loglevel=$loglevel --optimization=fair --autoscale=$MAX_CONCURRENCY,$MIN_CONCURRENCY -Q main_scan_queue &"$'\n'
 else
     commands+="celery -A ReNgGinaNg.tasks worker --loglevel=$loglevel --optimization=fair --autoscale=$MAX_CONCURRENCY,$MIN_CONCURRENCY -Q main_scan_queue &"$'\n'
 fi

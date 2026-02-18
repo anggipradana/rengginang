@@ -558,12 +558,12 @@ class ReportForm(forms.ModelForm):
             "placeholder": "Footer Text © Your Company",
         }))
 
-    show_rengine_banner = forms.BooleanField(
+    show_rengginang_banner = forms.BooleanField(
         required=False,
         widget=forms.CheckboxInput(
             attrs={
                 "class": "form-check-input",
-                "id": "show_rengine_banner",
+                "id": "show_rengginang_banner",
             }))
 
     show_executive_summary = forms.BooleanField(
@@ -636,7 +636,7 @@ class ReportForm(forms.ModelForm):
         self.initial['company_address'] = key.company_address
         self.initial['company_website'] = key.company_website
         self.initial['company_email'] = key.company_email
-        self.initial['show_rengine_banner'] = key.show_rengine_banner
+        self.initial['show_rengginang_banner'] = key.show_rengginang_banner
         self.initial['show_executive_summary'] = key.show_executive_summary
         self.initial['executive_summary_description'] = key.executive_summary_description
         self.initial['executive_summary_description_id'] = key.executive_summary_description_id
@@ -648,7 +648,7 @@ class ReportForm(forms.ModelForm):
         self.initial['document_number'] = key.document_number or ''
 
     def set_initial(self):
-        self.initial['show_rengine_banner'] = True
+        self.initial['show_rengginang_banner'] = True
         self.initial['show_footer'] = False
         self.initial['show_executive_summary'] = False
         self.initial['primary_color'] = '#FFB74D'

@@ -6,7 +6,7 @@ import mimetypes
 import os
 
 from ReNgGinaNg.init import first_run
-from ReNgGinaNg.utilities import RengineTaskFormatter
+from ReNgGinaNg.utilities import ReNgGinaNgTaskFormatter
 
 mimetypes.add_type("text/javascript", ".js", True)
 mimetypes.add_type("text/css", ".css", True)
@@ -274,7 +274,7 @@ LOGGING = {
             'format': '%(name)-10s | %(message)s'
         },
         'task': {
-            '()': lambda : RengineTaskFormatter('%(task_name)-34s | %(levelname)s | %(message)s')
+            '()': lambda : ReNgGinaNgTaskFormatter('%(task_name)-34s | %(levelname)s | %(message)s')
         },
         'simple': {
             'format': '%(levelname)s %(message)s',
