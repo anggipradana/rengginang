@@ -412,6 +412,14 @@ def index(request, slug):
 			})
 	leak_per_domain.sort(key=lambda x: x['count'], reverse=True)
 
+	# CVE per pulse for chart
+	cve_pulse_counts = {}
+	for cve in cves:
+		pulse_name = cve.get('pulse', 'Unknown')[:40]
+		cve_pulse_counts[pulse_name] = cve_pulse_counts.get(pulse_name, 0) + 1
+	cve_per_pulse = [{'pulse': k, 'count': v} for k, v in cve_pulse_counts.items()]
+	cve_per_pulse.sort(key=lambda x: x['count'], reverse=True)
+
 	context = {
 		'threat_intel_active': 'active',
 		'project': project,
@@ -433,6 +441,7 @@ def index(request, slug):
 		'ioc_type_counts': ioc_type_counts,
 		'cves': cves[:50],
 		'leak_per_domain': leak_per_domain[:10],
+		'cve_per_pulse': cve_per_pulse[:10],
 	}
 	return render(request, 'threatIntel/index.html', context)
 

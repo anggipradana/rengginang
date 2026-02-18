@@ -153,26 +153,12 @@ Threat Intelligence
     </div>
   </div>
   {% endif %}
-  {% if cves %}
+  {% if cve_per_pulse %}
   <div class="col-xl-4 col-lg-6 col-12">
     <div class="card">
       <div class="card-body">
-        <h4 class="header-title mb-3"><i class="fe-alert-octagon me-1 text-danger"></i> CVE Summary</h4>
-        <div class="text-center mb-3">
-          <h2 class="text-danger">{{cves|length}}</h2>
-          <p class="text-muted mb-0">CVE references found in threat pulses</p>
-        </div>
-        <div data-simplebar style="max-height: 200px;">
-          {% for cve in cves|slice:":15" %}
-          <div class="d-flex align-items-center justify-content-between py-1 border-bottom">
-            <a href="https://nvd.nist.gov/vuln/detail/{{cve.id}}" target="_blank" class="text-danger fw-bold"><code>{{cve.id}}</code></a>
-            <small class="text-muted text-truncate ms-2" style="max-width: 180px;">{{cve.pulse|truncatechars:35}}</small>
-          </div>
-          {% endfor %}
-          {% if cves|length > 15 %}
-          <p class="text-muted text-center mt-2"><small>... and {{cves|length|add:"-15"}} more</small></p>
-          {% endif %}
-        </div>
+        <h4 class="header-title mb-3"><i class="fe-alert-octagon me-1 text-danger"></i> CVE References <span class="badge bg-danger ms-1">{{cves|length}}</span></h4>
+        <div id="cve_per_pulse_chart" class="apex-charts" style="min-height: 280px;"></div>
       </div>
     </div>
   </div>
@@ -581,6 +567,20 @@ Threat Intelligence
       plotOptions: { pie: { donut: { size: '55%' } } },
     });
     iocTypeChart.render();
+    {% endif %}
+
+    // CVE References per Pulse Bar Chart
+    {% if cve_per_pulse %}
+    var cvePulseChart = new ApexCharts(document.querySelector("#cve_per_pulse_chart"), {
+      chart: { type: 'bar', height: 280 },
+      series: [{ name: 'CVEs', data: [{% for cp in cve_per_pulse %}{{cp.count}}{% if not forloop.last %},{% endif %}{% endfor %}] }],
+      xaxis: { categories: [{% for cp in cve_per_pulse %}'{{cp.pulse|truncatechars:25}}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+      colors: ['#F44336'],
+      plotOptions: { bar: { borderRadius: 4, horizontal: true } },
+      dataLabels: { enabled: true },
+      tooltip: { y: { formatter: function(val) { return val + ' CVE(s)'; } } },
+    });
+    cvePulseChart.render();
     {% endif %}
 
     // Leaked Credentials by Domain Bar Chart
