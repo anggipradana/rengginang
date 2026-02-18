@@ -301,14 +301,14 @@ def index(request, slug):
 	domains_with_leaks = leak_data.filter(total_found__gt=0).count()
 
 	# Risk score — weighted by direct relevance to domain owner
-	# Component 1: OTX Reputation (0-25) — direct domain assessment
+	# Component 1: OTX Reputation (0-20) — direct domain assessment
 	max_reputation = 0
 	for od in otx_data:
 		if od.reputation and od.reputation > max_reputation:
 			max_reputation = od.reputation
-	reputation_score = min(25, max_reputation * 5)
+	reputation_score = min(20, max_reputation * 4)
 
-	# Component 2: Credential Exposure (0-35) — unchecked leaks weigh more
+	# Component 2: Credential Exposure (0-45) — unchecked leaks = primary risk
 	total_domains = domains.count() or 1
 	unchecked_leaks = 0
 	checked_leaks = 0
@@ -319,29 +319,32 @@ def index(request, slug):
 				checked_leaks += 1
 			else:
 				unchecked_leaks += 1
-	# Unchecked = full weight, checked = 20% weight
-	effective_leaks = unchecked_leaks + (checked_leaks * 0.2)
-	leaks_per_domain = effective_leaks / total_domains
-	if leaks_per_domain >= 50:
-		leak_score = 35
-	elif leaks_per_domain >= 20:
-		leak_score = 25
-	elif leaks_per_domain >= 10:
+	# Score based on unchecked credentials per domain (belum ditinjau = risiko utama)
+	unchecked_per_domain = unchecked_leaks / total_domains
+	if unchecked_per_domain >= 30:
+		leak_score = 45
+	elif unchecked_per_domain >= 15:
+		leak_score = 38
+	elif unchecked_per_domain >= 8:
+		leak_score = 28
+	elif unchecked_per_domain >= 3:
 		leak_score = 18
-	elif leaks_per_domain >= 5:
-		leak_score = 12
-	elif effective_leaks > 0:
-		leak_score = 5
+	elif unchecked_leaks > 0:
+		leak_score = 10
 	else:
 		leak_score = 0
+	# Checked credentials reduce risk slightly (sudah ditinjau = sudah ditangani)
+	if unchecked_leaks + checked_leaks > 0:
+		review_ratio = checked_leaks / (unchecked_leaks + checked_leaks)
+		leak_score = max(0, round(leak_score * (1 - review_ratio * 0.6)))
 
 	# Component 3: Malware Association (0-10) — feed-based, not actual malware in env
 	malware_score = min(10, total_malware * 2)
 
-	# Component 4: Threat Exposure (0-30) — ratio of domains in threat feeds
+	# Component 4: Threat Exposure (0-25) — ratio of domains in threat feeds
 	if total_domains > 0:
 		exposure_ratio = domains_with_threats / total_domains
-		exposure_score = min(30, round(exposure_ratio * 30))
+		exposure_score = min(25, round(exposure_ratio * 25))
 	else:
 		exposure_score = 0
 
@@ -975,14 +978,14 @@ def generate_threat_report(request, slug):
 	severity_scores = _calculate_severity_scores(otx_data_list, leak_data_list, banking_pulses, cves)
 
 	# Risk score — same 4-component weighted formula as index page
-	# Component 1: OTX Reputation (0-25)
+	# Component 1: OTX Reputation (0-20)
 	max_reputation = 0
 	for od in otx_data_list:
 		if od.reputation and od.reputation > max_reputation:
 			max_reputation = od.reputation
-	reputation_score = min(25, max_reputation * 5)
+	reputation_score = min(20, max_reputation * 4)
 
-	# Component 2: Credential Exposure (0-35) — unchecked leaks weigh more
+	# Component 2: Credential Exposure (0-45) — unchecked leaks = primary risk
 	total_domains = len(set(od.domain_id for od in otx_data_list)) or 1
 	unchecked_leaks = 0
 	checked_leaks = 0
@@ -993,31 +996,34 @@ def generate_threat_report(request, slug):
 				checked_leaks += 1
 			else:
 				unchecked_leaks += 1
-	# Unchecked = full weight, checked = 20% weight
-	effective_leaks = unchecked_leaks + (checked_leaks * 0.2)
-	leaks_per_domain = effective_leaks / total_domains
-	if leaks_per_domain >= 50:
-		leak_score = 35
-	elif leaks_per_domain >= 20:
-		leak_score = 25
-	elif leaks_per_domain >= 10:
+	# Score based on unchecked credentials per domain
+	unchecked_per_domain = unchecked_leaks / total_domains
+	if unchecked_per_domain >= 30:
+		leak_score = 45
+	elif unchecked_per_domain >= 15:
+		leak_score = 38
+	elif unchecked_per_domain >= 8:
+		leak_score = 28
+	elif unchecked_per_domain >= 3:
 		leak_score = 18
-	elif leaks_per_domain >= 5:
-		leak_score = 12
-	elif effective_leaks > 0:
-		leak_score = 5
+	elif unchecked_leaks > 0:
+		leak_score = 10
 	else:
 		leak_score = 0
+	# Checked credentials reduce risk slightly
+	if unchecked_leaks + checked_leaks > 0:
+		review_ratio = checked_leaks / (unchecked_leaks + checked_leaks)
+		leak_score = max(0, round(leak_score * (1 - review_ratio * 0.6)))
 
 	# Component 3: Malware Association (0-10)
 	total_malware_count = sum(od.malware_count for od in otx_data_list)
 	malware_score = min(10, total_malware_count * 2)
 
-	# Component 4: Threat Exposure (0-30)
+	# Component 4: Threat Exposure (0-25)
 	domains_with_threats = sum(1 for od in otx_data_list if od.pulse_count and od.pulse_count > 0)
 	if total_domains > 0:
 		exposure_ratio = domains_with_threats / total_domains
-		exposure_score = min(30, round(exposure_ratio * 30))
+		exposure_score = min(25, round(exposure_ratio * 25))
 	else:
 		exposure_score = 0
 
