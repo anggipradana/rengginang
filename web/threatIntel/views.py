@@ -308,9 +308,20 @@ def index(request, slug):
 			max_reputation = od.reputation
 	reputation_score = min(25, max_reputation * 5)
 
-	# Component 2: Credential Exposure (0-35) — leaked credentials per domain
+	# Component 2: Credential Exposure (0-35) — unchecked leaks weigh more
 	total_domains = domains.count() or 1
-	leaks_per_domain = total_leaks / total_domains
+	unchecked_leaks = 0
+	checked_leaks = 0
+	for ld in leak_data:
+		checked_set = set(ld.checked_credentials or [])
+		for c in (ld.leaked_credentials or []):
+			if _credential_hash(c) in checked_set:
+				checked_leaks += 1
+			else:
+				unchecked_leaks += 1
+	# Unchecked = full weight, checked = 20% weight
+	effective_leaks = unchecked_leaks + (checked_leaks * 0.2)
+	leaks_per_domain = effective_leaks / total_domains
 	if leaks_per_domain >= 50:
 		leak_score = 35
 	elif leaks_per_domain >= 20:
@@ -319,7 +330,7 @@ def index(request, slug):
 		leak_score = 18
 	elif leaks_per_domain >= 5:
 		leak_score = 12
-	elif total_leaks > 0:
+	elif effective_leaks > 0:
 		leak_score = 5
 	else:
 		leak_score = 0
@@ -971,10 +982,20 @@ def generate_threat_report(request, slug):
 			max_reputation = od.reputation
 	reputation_score = min(25, max_reputation * 5)
 
-	# Component 2: Credential Exposure (0-35)
-	total_leaks_count = sum(ld.total_found for ld in leak_data_list)
+	# Component 2: Credential Exposure (0-35) — unchecked leaks weigh more
 	total_domains = len(set(od.domain_id for od in otx_data_list)) or 1
-	leaks_per_domain = total_leaks_count / total_domains
+	unchecked_leaks = 0
+	checked_leaks = 0
+	for ld in leak_data_list:
+		checked_set = set(ld.checked_credentials or [])
+		for c in (ld.leaked_credentials or []):
+			if _credential_hash(c) in checked_set:
+				checked_leaks += 1
+			else:
+				unchecked_leaks += 1
+	# Unchecked = full weight, checked = 20% weight
+	effective_leaks = unchecked_leaks + (checked_leaks * 0.2)
+	leaks_per_domain = effective_leaks / total_domains
 	if leaks_per_domain >= 50:
 		leak_score = 35
 	elif leaks_per_domain >= 20:
@@ -983,7 +1004,7 @@ def generate_threat_report(request, slug):
 		leak_score = 18
 	elif leaks_per_domain >= 5:
 		leak_score = 12
-	elif total_leaks_count > 0:
+	elif effective_leaks > 0:
 		leak_score = 5
 	else:
 		leak_score = 0
