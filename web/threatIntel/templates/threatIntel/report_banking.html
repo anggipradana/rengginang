@@ -433,6 +433,9 @@
   <li><strong>{{total_leaks}}</strong> leaked credential ditemukan di seluruh domain yang dipantau</li>
   <li><strong>{{total_malware}}</strong> malware sample terkait dengan domain yang dipantau</li>
   <li><strong>{{domains_monitored}}</strong> domain dipantau secara aktif</li>
+  {% if risk_breakdown.vulnerability > 0 %}
+  <li><strong>{{va_counts.critical}}</strong> kerentanan kritikal dan <strong>{{va_counts.high}}</strong> kerentanan tinggi dari vulnerability assessment</li>
+  {% endif %}
   {% if manual_indicators %}
   <li><strong>{{manual_indicators|length}}</strong> manual indicator dilacak</li>
   {% endif %}
@@ -485,6 +488,9 @@
   <li><strong>{{total_leaks}}</strong> leaked credential(s) discovered across monitored domains</li>
   <li><strong>{{total_malware}}</strong> malware sample(s) associated with monitored domains</li>
   <li><strong>{{domains_monitored}}</strong> domain(s) actively monitored</li>
+  {% if risk_breakdown.vulnerability > 0 %}
+  <li><strong>{{va_counts.critical}}</strong> critical and <strong>{{va_counts.high}}</strong> high severity vulnerabilities from VA scan</li>
+  {% endif %}
   {% if manual_indicators %}
   <li><strong>{{manual_indicators|length}}</strong> manual indicator(s) tracked</li>
   {% endif %}
@@ -723,21 +729,78 @@
 <!-- ════════════════════════════════════════════ -->
 <div class="page-break"></div>
 {% if lang == 'id' %}
-<h1>7. Ringkasan Tingkat Keparahan</h1>
-<p>Penilaian keparahan berikut berdasarkan analisis otomatis temuan intelijen ancaman.</p>
+<h1>7. Ringkasan Tingkat Keparahan & Penilaian Risiko</h1>
+<p>Penilaian keparahan berikut berdasarkan analisis otomatis temuan intelijen ancaman dan hasil vulnerability assessment.</p>
 {% else %}
-<h1>7. Severity & Triage Summary</h1>
-<p>The following severity assessment is based on automated analysis of threat intelligence findings.</p>
+<h1>7. Severity & Risk Assessment</h1>
+<p>The following assessment is based on automated analysis of threat intelligence findings and vulnerability assessment results.</p>
 {% endif %}
 
-{% if severity_scores %}
+<!-- Risk Score Breakdown -->
+<h3>{% if lang == 'id' %}Komponen Skor Risiko{% else %}Risk Score Components{% endif %}</h3>
 <table>
   <thead>
     <tr>
-      <th>Category</th>
-      <th>Finding</th>
-      <th>Severity</th>
-      <th>Score</th>
+      <th>{% if lang == 'id' %}Komponen{% else %}Component{% endif %}</th>
+      <th>{% if lang == 'id' %}Skor{% else %}Score{% endif %}</th>
+      <th>{% if lang == 'id' %}Keterangan{% else %}Details{% endif %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>{% if lang == 'id' %}Reputasi Domain (OTX){% else %}Domain Reputation (OTX){% endif %}</strong></td>
+      <td>{{risk_breakdown.reputation}}</td>
+      <td>{% if lang == 'id' %}Penilaian reputasi domain dari OTX AlienVault{% else %}Domain reputation assessment from OTX AlienVault{% endif %}</td>
+    </tr>
+    <tr>
+      <td><strong>{% if lang == 'id' %}Paparan Kredensial{% else %}Credential Exposure{% endif %}</strong></td>
+      <td>{{risk_breakdown.leak}}</td>
+      <td>
+        {% if lang == 'id' %}{{risk_breakdown.unchecked_leaks}} kredensial belum ditinjau, {{risk_breakdown.checked_leaks}} sudah ditinjau
+        {% else %}{{risk_breakdown.unchecked_leaks}} unchecked credential(s), {{risk_breakdown.checked_leaks}} reviewed
+        {% endif %}
+      </td>
+    </tr>
+    <tr>
+      <td><strong>{% if lang == 'id' %}Asosiasi Malware{% else %}Malware Association{% endif %}</strong></td>
+      <td>{{risk_breakdown.malware}}</td>
+      <td>{% if lang == 'id' %}Sampel malware terkait domain{% else %}Malware samples associated with domains{% endif %}</td>
+    </tr>
+    <tr>
+      <td><strong>{% if lang == 'id' %}Paparan Ancaman{% else %}Threat Exposure{% endif %}</strong></td>
+      <td>{{risk_breakdown.exposure}}</td>
+      <td>{% if lang == 'id' %}Rasio domain dalam threat feeds{% else %}Ratio of domains in threat feeds{% endif %}</td>
+    </tr>
+    {% if risk_breakdown.vulnerability > 0 %}
+    <tr>
+      <td><strong>{% if lang == 'id' %}Vulnerability Assessment{% else %}Vulnerability Assessment{% endif %}</strong></td>
+      <td>{{risk_breakdown.vulnerability}}</td>
+      <td>
+        {% if lang == 'id' %}{{va_counts.critical}} kritikal, {{va_counts.high}} tinggi, {{va_counts.medium}} sedang, {{va_counts.low}} rendah
+        {% else %}{{va_counts.critical}} critical, {{va_counts.high}} high, {{va_counts.medium}} medium, {{va_counts.low}} low
+        {% endif %}
+      </td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+
+<h3>{% if lang == 'id' %}Skor Risiko Keseluruhan{% else %}Overall Risk Score{% endif %}</h3>
+<div class="risk-meter">
+  <div class="risk-meter-fill" style="width: {{overall_risk}}%; background: {% if overall_risk >= 70 %}#d32f2f{% elif overall_risk >= 40 %}#f57c00{% else %}#388e3c{% endif %};"></div>
+</div>
+<p style="text-align: center; font-size: 16pt; font-weight: 600; color: {% if overall_risk >= 70 %}#d32f2f{% elif overall_risk >= 40 %}#f57c00{% else %}#388e3c{% endif %};">
+  {{overall_risk}} / 100
+</p>
+
+{% if severity_scores %}
+<h3>{% if lang == 'id' %}Detail Temuan{% else %}Finding Details{% endif %}</h3>
+<table>
+  <thead>
+    <tr>
+      <th>{% if lang == 'id' %}Kategori{% else %}Category{% endif %}</th>
+      <th>{% if lang == 'id' %}Temuan{% else %}Finding{% endif %}</th>
+      <th>{% if lang == 'id' %}Keparahan{% else %}Severity{% endif %}</th>
     </tr>
   </thead>
   <tbody>
@@ -750,21 +813,43 @@
           {{s.severity}}
         </span>
       </td>
-      <td>{{s.score}} / 10</td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+{% endif %}
 
-<h3>Overall Risk Score</h3>
-<div class="risk-meter">
-  <div class="risk-meter-fill" style="width: {{overall_risk}}%; background: {% if overall_risk >= 70 %}#d32f2f{% elif overall_risk >= 40 %}#f57c00{% else %}#388e3c{% endif %};"></div>
-</div>
-<p style="text-align: center; font-size: 16pt; font-weight: 600; color: {% if overall_risk >= 70 %}#d32f2f{% elif overall_risk >= 40 %}#f57c00{% else %}#388e3c{% endif %};">
-  {{overall_risk}} / 100
-</p>
+{% if risk_breakdown.vulnerability > 0 %}
+<h3>{% if lang == 'id' %}Ringkasan Vulnerability Assessment{% else %}Vulnerability Assessment Summary{% endif %}</h3>
+<table>
+  <thead>
+    <tr>
+      <th>{% if lang == 'id' %}Keparahan{% else %}Severity{% endif %}</th>
+      <th>{% if lang == 'id' %}Jumlah{% else %}Count{% endif %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if va_counts.critical > 0 %}
+    <tr><td><span class="badge badge-critical">CRITICAL</span></td><td>{{va_counts.critical}}</td></tr>
+    {% endif %}
+    {% if va_counts.high > 0 %}
+    <tr><td><span class="badge badge-high">HIGH</span></td><td>{{va_counts.high}}</td></tr>
+    {% endif %}
+    {% if va_counts.medium > 0 %}
+    <tr><td><span class="badge badge-medium">MEDIUM</span></td><td>{{va_counts.medium}}</td></tr>
+    {% endif %}
+    {% if va_counts.low > 0 %}
+    <tr><td><span class="badge badge-low">LOW</span></td><td>{{va_counts.low}}</td></tr>
+    {% endif %}
+  </tbody>
+</table>
+<p>
+{% if lang == 'id' %}
+Temuan vulnerability assessment di atas dimasukkan ke dalam perhitungan skor risiko. Kerentanan kritikal dan tinggi memiliki bobot paling besar dalam komponen ini.
 {% else %}
-<p class="text-muted">{% if lang == 'id' %}Tidak ada temuan keparahan signifikan yang perlu dilaporkan saat ini.{% else %}No significant severity findings to report at this time.{% endif %}</p>
+The above vulnerability assessment findings are factored into the risk score calculation. Critical and high severity vulnerabilities carry the most weight in this component.
+{% endif %}
+</p>
 {% endif %}
 
 

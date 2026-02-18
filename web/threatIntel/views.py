@@ -1101,6 +1101,8 @@ def generate_threat_report(request, slug):
 		'iocs': iocs,
 		'cves': cves[:30],
 		'severity_scores': severity_scores,
+		'risk_breakdown': risk,
+		'va_counts': va_counts,
 		'all_leaked_creds': all_leaked_creds[:200],
 		'otx_data_list': otx_data_list,
 		'leak_data_list': leak_data_list,
