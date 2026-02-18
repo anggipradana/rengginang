@@ -445,7 +445,7 @@
       </footer>
     </article>
 
-    <article id="contents">
+    <article id="contents" style="page-break-before: always;">
       <h2>&nbsp;</h2>
       <h3>Table of contents</h3>
       <ul>
@@ -521,7 +521,7 @@
 
     <!-- vulnerability section, hide if only recon report -->
     {% if show_vuln %}
-      <article>
+      <article style="page-break-before: always;">
         <br>
         <h4 id="vulnerability-summary" class="subheading">Vulnerability Summary</h4>
         <div id="boxes">
@@ -581,7 +581,7 @@
       </article>
     {% endif %}
 
-    <article>
+    <article style="page-break-before: always;">
       <h3 id="assessment-timeline" class="page_title">Timeline of the Assessment</h3>
       <p>
         Scan started on: {{scan_object.start_scan_date|date:"F j, Y h:i"}}

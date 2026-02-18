@@ -281,24 +281,28 @@
           justify-content: space-between;
           background-color: white;
           font-family: 'Inter', sans-serif;
+          page-break-before: always;
       }
 
       #quick-summary-page {
           justify-content: space-between;
           background-color: white;
           font-family: 'Inter', sans-serif;
+          page-break-before: always;
       }
 
       #summary-of-finding-page {
           justify-content: space-between;
           background-color: white;
           font-family: 'Inter', sans-serif;
+          page-break-before: always;
       }
 
       #vulnerability-breakdown-chart-page {
           justify-content: space-between;
           background-color: white;
           font-family: 'Inter', sans-serif;
+          page-break-before: always;
       }
 
       .page-title {
@@ -839,7 +843,7 @@
                 </div>
             {% endif %}
         </article>
-        <article>
+        <article style="page-break-before: always;">
             <h2 id="assessment-timeline" class="page-title">{{ labels.assessment_timeline }}</h2>
             <p>
                 {{ labels.scan_started_on }}: {{ scan_object.start_scan_date|date:"F j, Y h:i" }}
@@ -878,7 +882,7 @@
             {% endif %}
         </article>
         {% if show_vuln %}
-            <article>
+            <article style="page-break-before: always;">
                 <h3 class="primary">{{ labels.summary_of_vulns }}</h3>
                 {% if all_vulnerabilities.count == 0 %}
                     <p>
@@ -926,7 +930,7 @@
             </article>
         {% endif %}
         {% if show_recon %}
-            <article>
+            <article style="page-break-before: always;">
                 <h2 class="page-title" id="discovered-assets">{{ labels.discovered_assets }}</h2>
                 <p>{{ labels.discovered_assets_desc }}</p>
                 <h3 class="primary">{{ labels.subdomains }}</h3>
@@ -1030,7 +1034,7 @@
             </article>
         {% endif %}
         {% if show_recon %}
-            <article>
+            <article style="page-break-before: always;">
                 <h2 class="page-title" id="reconnaissance-findings">{{ labels.reconnaissance_findings }}</h2>
                 <p>{{ labels.recon_findings_desc }}</p>
                 {% for subdomain in subdomains %}
@@ -1082,7 +1086,7 @@
             </article>
         {% endif %}
         {% if show_vuln %}
-            <article id="vulnerabilities-discovered">
+            <article id="vulnerabilities-discovered" style="page-break-before: always;">
                 <h2 class="page-title primary">{{ labels.vulnerabilities_discovered }}</h2>
                 <p>
                 {{ labels.vuln_section_desc }}
