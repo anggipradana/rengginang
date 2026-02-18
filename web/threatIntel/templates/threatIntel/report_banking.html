@@ -773,11 +773,11 @@
     </tr>
     {% if risk_breakdown.vulnerability > 0 %}
     <tr>
-      <td><strong>{% if lang == 'id' %}Vulnerability Assessment{% else %}Vulnerability Assessment{% endif %}</strong></td>
+      <td><strong>Vulnerability Assessment</strong></td>
       <td>{{risk_breakdown.vulnerability}}</td>
       <td>
-        {% if lang == 'id' %}{{va_counts.critical}} kritikal, {{va_counts.high}} tinggi, {{va_counts.medium}} sedang, {{va_counts.low}} rendah
-        {% else %}{{va_counts.critical}} critical, {{va_counts.high}} high, {{va_counts.medium}} medium, {{va_counts.low}} low
+        {% if lang == 'id' %}{{risk_breakdown.total_vulns}} kerentanan, rerata severity {{risk_breakdown.avg_severity}}/4.0 ({{va_counts.critical}} kritikal, {{va_counts.high}} tinggi, {{va_counts.medium}} sedang, {{va_counts.low}} rendah)
+        {% else %}{{risk_breakdown.total_vulns}} vulnerabilities, avg severity {{risk_breakdown.avg_severity}}/4.0 ({{va_counts.critical}} critical, {{va_counts.high}} high, {{va_counts.medium}} medium, {{va_counts.low}} low)
         {% endif %}
       </td>
     </tr>
