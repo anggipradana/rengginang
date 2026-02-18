@@ -371,7 +371,7 @@ def index(request, slug):
 	# Fetch latest OTX pulses feed (global, not per-domain)
 	latest_pulses = []
 	if otx_key:
-		latest_pulses = _fetch_otx_pulses(otx_key.key, limit=10)
+		latest_pulses = _fetch_otx_pulses(otx_key.key, limit=20)
 
 	# Manual indicators
 	manual_indicators = ManualIndicator.objects.filter(project=project).order_by('-created_at')
