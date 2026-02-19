@@ -62,10 +62,7 @@ $("#schedule_scan_steps").steps({
   labels: { finish: "Schedule Scan" },
   onInit: function (event, current) {
     $('a[role="menuitem"]').addClass("text-white");
-    $(".actions ul li:nth-child(3) a").attr(
-      "onclick",
-      `$(this).closest('form').submit()`
-    );
+    $(".actions ul li:nth-child(3) a").attr("onclick", `$(this).closest('form').submit()`);
     flatpickr(document.getElementById("clockedTime"), {
       enableTime: true,
       dateFormat: "Y-m-d H:i",

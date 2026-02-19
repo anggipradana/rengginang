@@ -35,9 +35,7 @@ function disableNext() {
   nextButton.attr("href", "#");
   nextButton.removeClass("btn btn-primary waves-effect waves-light text-white");
   buttonEnabled = false;
-  $(".actions ul li:nth-child(2)")
-    .addClass("disabled")
-    .attr("aria-disabled", "true");
+  $(".actions ul li:nth-child(2)").addClass("disabled").attr("aria-disabled", "true");
 }
 
 function enableNext() {
@@ -45,9 +43,7 @@ function enableNext() {
   nextButton.attr("href", "#next");
   buttonEnabled = true;
   nextButton.addClass("btn btn-primary waves-effect waves-light text-white");
-  $(".actions ul li:nth-child(2)")
-    .removeClass("disabled")
-    .attr("aria-disabled", "false");
+  $(".actions ul li:nth-child(2)").removeClass("disabled").attr("aria-disabled", "false");
 }
 
 function updateButton() {

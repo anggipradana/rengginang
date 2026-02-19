@@ -19,9 +19,7 @@ function updateNotifications() {
   })
     .then((response) => response.json())
     .then((data) => {
-      const notificationPanel = document.querySelector(
-        ".notification-panel-body"
-      );
+      const notificationPanel = document.querySelector(".notification-panel-body");
       notificationPanel.innerHTML = "";
 
       if (data.length === 0) {
@@ -47,9 +45,7 @@ function updateNotifications() {
           notificationItem.innerHTML = `
                     <div class="notification-panel-content flex-grow-1">
                         <div class="d-flex justify-content-between align-items-center mb-2">
-                            <h6 class="notification-panel-title mb-0">${
-                              notification.title
-                            }</h6>
+                            <h6 class="notification-panel-title mb-0">${notification.title}</h6>
                             <span class="notification-panel-icon">
                                 <i class="mdi ${notification.icon}"></i>
                             </span>
@@ -204,26 +200,20 @@ function markAllAsRead() {
   })
     .then((response) => {
       if (response.ok) {
-        document
-          .querySelectorAll(".notification-panel-item")
-          .forEach((item) => {
-            item.classList.remove("notification-panel-unread");
-          });
+        document.querySelectorAll(".notification-panel-item").forEach((item) => {
+          item.classList.remove("notification-panel-unread");
+        });
         updateUnreadCount();
       }
     })
-    .catch((error) =>
-      console.error("Error marking all notifications as read:", error)
-    );
+    .catch((error) => console.error("Error marking all notifications as read:", error));
 }
 
 function updateTimes() {
-  document
-    .querySelectorAll(".notification-panel-time")
-    .forEach((timeElement) => {
-      const datetime = timeElement.getAttribute("datetime");
-      if (datetime) {
-        timeElement.textContent = timeago.format(new Date(datetime));
-      }
-    });
+  document.querySelectorAll(".notification-panel-time").forEach((timeElement) => {
+    const datetime = timeElement.getAttribute("datetime");
+    if (datetime) {
+      timeElement.textContent = timeago.format(new Date(datetime));
+    }
+  });
 }
