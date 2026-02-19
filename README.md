@@ -42,18 +42,18 @@ This release delivers a **Threat Intelligence module**, **bilingual PDF reportin
 
 ### vs reNgine 2.2.0
 
-| Feature | reNgine 2.2.0 | ReNgGinaNg 1.0 |
-|---------|---------------|-----------------|
-| Threat Intelligence Page | - | OTX AlienVault + LeakCheck |
-| Dark Web Breach Monitoring | - | Per-domain credential leak scanning |
-| IoC / CVE Analytics | - | Tables + Donut/Bar charts |
-| Bilingual PDF Reports | English only | English + Bahasa Indonesia |
-| Report Customization | Basic | Company logo, doc number, exec summary |
-| WPScan Integration | - | WordPress vulnerability scanning |
-| Manual Threat Indicators | - | Add/manage indicators manually |
-| Dashboard TI Overview | - | Pulse count, leak count, risk cards |
-| Google Chat Notifications | - | Webhook integration for Google Chat |
-| Branding | reNgine | ReNgGinaNg (fully independent) |
+| Feature                    | reNgine 2.2.0 | ReNgGinaNg 1.0                         |
+| -------------------------- | ------------- | -------------------------------------- |
+| Threat Intelligence Page   | -             | OTX AlienVault + LeakCheck             |
+| Dark Web Breach Monitoring | -             | Per-domain credential leak scanning    |
+| IoC / CVE Analytics        | -             | Tables + Donut/Bar charts              |
+| Bilingual PDF Reports      | English only  | English + Bahasa Indonesia             |
+| Report Customization       | Basic         | Company logo, doc number, exec summary |
+| WPScan Integration         | -             | WordPress vulnerability scanning       |
+| Manual Threat Indicators   | -             | Add/manage indicators manually         |
+| Dashboard TI Overview      | -             | Pulse count, leak count, risk cards    |
+| Google Chat Notifications  | -             | Webhook integration for Google Chat    |
+| Branding                   | reNgine       | ReNgGinaNg (fully independent)         |
 
 ### Risk Score Calculation
 
@@ -61,24 +61,24 @@ The unified Risk Score (0–100) is calculated across Dashboard, Threat Intel pa
 
 #### With VA Data (5 components)
 
-| Component | Max | Source | Description |
-|-----------|-----|--------|-------------|
-| **Vulnerability Assessment** | **40** | VA Scan | Weighted vulnerability density per domain + severity bonus. Uses `(critical×4 + high×3 + medium×2 + low×1) / domains` as base, with avg severity² as multiplier. **Largest component.** |
-| **Credential Exposure** | **30** | LeakCheck | Based on **unchecked** (unreviewed) leaked credentials per domain. Reviewing credentials actively reduces the score. |
-| Threat Exposure | 12 | OTX AlienVault | Ratio of monitored domains appearing in threat intelligence feeds |
-| OTX Reputation | 10 | OTX AlienVault | Direct reputation assessment of the domain by OTX |
-| Malware Association | 8 | OTX AlienVault | Feed-based malware references (not actual malware in your environment) |
+| Component                    | Max    | Source         | Description                                                                                                                                                                             |
+| ---------------------------- | ------ | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Vulnerability Assessment** | **40** | VA Scan        | Weighted vulnerability density per domain + severity bonus. Uses `(critical×4 + high×3 + medium×2 + low×1) / domains` as base, with avg severity² as multiplier. **Largest component.** |
+| **Credential Exposure**      | **30** | LeakCheck      | Based on **unchecked** (unreviewed) leaked credentials per domain. Reviewing credentials actively reduces the score.                                                                    |
+| Threat Exposure              | 12     | OTX AlienVault | Ratio of monitored domains appearing in threat intelligence feeds                                                                                                                       |
+| OTX Reputation               | 10     | OTX AlienVault | Direct reputation assessment of the domain by OTX                                                                                                                                       |
+| Malware Association          | 8      | OTX AlienVault | Feed-based malware references (not actual malware in your environment)                                                                                                                  |
 
 #### Without VA Data (4 components)
 
 When no vulnerability scan data is available, the weights are redistributed:
 
-| Component | Max | Source |
-|-----------|-----|--------|
+| Component               | Max    | Source                                              |
+| ----------------------- | ------ | --------------------------------------------------- |
 | **Credential Exposure** | **45** | LeakCheck — unchecked leaked credentials per domain |
-| Threat Exposure | 25 | OTX AlienVault |
-| OTX Reputation | 20 | OTX AlienVault |
-| Malware Association | 10 | OTX AlienVault |
+| Threat Exposure         | 25     | OTX AlienVault                                      |
+| OTX Reputation          | 20     | OTX AlienVault                                      |
+| Malware Association     | 10     | OTX AlienVault                                      |
 
 #### Credential Exposure Detail
 
@@ -93,7 +93,7 @@ The leak component uses **unchecked credentials** (not yet reviewed) as the prim
 
 The VA component uses **weighted vulnerability density per domain** to naturally combine severity and volume:
 
-```
+```text
 weighted_density = (critical×4 + high×3 + medium×2 + low×1) / total_domains
 ```
 
@@ -102,13 +102,13 @@ weighted_density = (critical×4 + high×3 + medium×2 + low×1) / total_domains
 
 Example scenarios (4 domains):
 
-| Scenario | Avg Severity | Vuln Score /40 |
-|----------|-------------|---------------|
-| 10 Critical + 20 High | 3.33 | 36 |
-| 3 Critical + 10 High + 2 Medium + 4 Low | 2.63 | 24 |
-| 50 Medium | 2.00 | 31 |
-| 100 Low | 1.00 | 29 |
-| 1 Critical only | 4.00 | 16 |
+| Scenario                                | Avg Severity | Vuln Score /40 |
+| --------------------------------------- | ------------ | -------------- |
+| 10 Critical + 20 High                   | 3.33         | 36             |
+| 3 Critical + 10 High + 2 Medium + 4 Low | 2.63         | 24             |
+| 50 Medium                               | 2.00         | 31             |
+| 100 Low                                 | 1.00         | 29             |
+| 1 Critical only                         | 4.00         | 16             |
 
 #### Color Indicators
 
@@ -117,6 +117,7 @@ Example scenarios (4 domains):
 - **Red** (71–100): High risk
 
 > **Design decisions:**
+>
 > - **VA is the largest component (40)** because actual vulnerability findings from scanning are the most actionable security data.
 > - **Credential Exposure is second (30)** because leaked credentials represent confirmed breaches affecting users.
 > - **Malware association is intentionally low (8)** because OTX data reflects feed-based references, not actual malware in the domain's infrastructure.
@@ -124,20 +125,20 @@ Example scenarios (4 domains):
 
 ### New API Endpoints
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/<slug>/threat-intel/` | GET | Threat intelligence dashboard |
-| `/<slug>/threat-intel/refresh_all` | POST | Refresh all domains from OTX + LeakCheck |
-| `/<slug>/threat-intel/refresh_domain/<id>` | POST | Refresh single domain |
-| `/<slug>/threat-intel/scan_status` | GET | Polling endpoint for scan progress |
-| `/<slug>/threat-intel/domain_detail/<id>` | GET | Full threat data for a domain |
-| `/<slug>/threat-intel/toggle_checked/<id>` | POST | Mark/unmark a leaked credential as reviewed |
-| `/<slug>/threat-intel/add_indicator` | POST | Add a manual threat indicator |
-| `/<slug>/threat-intel/delete_indicator/<id>` | POST | Delete a manual indicator |
-| `/<slug>/threat-intel/refresh_indicator/<id>` | POST | Re-fetch threat data for a manual indicator |
-| `/<slug>/threat-intel/indicator_detail/<id>` | GET | Full detail for a manual indicator |
-| `/<slug>/threat-intel/generate_report` | GET | Generate TI PDF report |
-| `/<slug>/threat-intel/report_settings` | GET/POST | Configure report settings |
+| Endpoint                                      | Method   | Description                                 |
+| --------------------------------------------- | -------- | ------------------------------------------- |
+| `/<slug>/threat-intel/`                       | GET      | Threat intelligence dashboard               |
+| `/<slug>/threat-intel/refresh_all`            | POST     | Refresh all domains from OTX + LeakCheck    |
+| `/<slug>/threat-intel/refresh_domain/<id>`    | POST     | Refresh single domain                       |
+| `/<slug>/threat-intel/scan_status`            | GET      | Polling endpoint for scan progress          |
+| `/<slug>/threat-intel/domain_detail/<id>`     | GET      | Full threat data for a domain               |
+| `/<slug>/threat-intel/toggle_checked/<id>`    | POST     | Mark/unmark a leaked credential as reviewed |
+| `/<slug>/threat-intel/add_indicator`          | POST     | Add a manual threat indicator               |
+| `/<slug>/threat-intel/delete_indicator/<id>`  | POST     | Delete a manual indicator                   |
+| `/<slug>/threat-intel/refresh_indicator/<id>` | POST     | Re-fetch threat data for a manual indicator |
+| `/<slug>/threat-intel/indicator_detail/<id>`  | GET      | Full detail for a manual indicator          |
+| `/<slug>/threat-intel/generate_report`        | GET      | Generate TI PDF report                      |
+| `/<slug>/threat-intel/report_settings`        | GET/POST | Configure report settings                   |
 
 ---
 
@@ -260,6 +261,7 @@ nano .env
 ```
 
 **Important**: Change these values:
+
 - `AUTHORITY_PASSWORD` — SSL certificate password
 - `POSTGRES_PASSWORD` — Database password (use a strong one)
 - `DJANGO_SUPERUSER_USERNAME` — Admin username
@@ -285,7 +287,7 @@ make up
 
 Open your browser and navigate to:
 
-```
+```text
 https://your-server-ip
 ```
 
@@ -295,12 +297,12 @@ Login with the credentials from your `.env` file.
 
 Navigate to **Settings > API Vault** and add:
 
-| API | Purpose | Get Key |
-|-----|---------|---------|
-| OTX AlienVault | Threat intelligence data | [otx.alienvault.com](https://otx.alienvault.com) |
-| LeakCheck | Dark web breach data | [leakcheck.io](https://leakcheck.io) |
-| WPScan | WordPress vulnerability scanning | [wpscan.com](https://wpscan.com) |
-| OpenAI / Ollama | LLM-powered analysis | Local Ollama or OpenAI API |
+| API             | Purpose                          | Get Key                                          |
+| --------------- | -------------------------------- | ------------------------------------------------ |
+| OTX AlienVault  | Threat intelligence data         | [otx.alienvault.com](https://otx.alienvault.com) |
+| LeakCheck       | Dark web breach data             | [leakcheck.io](https://leakcheck.io)             |
+| WPScan          | WordPress vulnerability scanning | [wpscan.com](https://wpscan.com)                 |
+| OpenAI / Ollama | LLM-powered analysis             | Local Ollama or OpenAI API                       |
 
 ### Docker Compose Commands
 
@@ -354,13 +356,13 @@ flowchart LR
 
 ReNgGinaNg comes with pre-configured scan engines:
 
-| Engine | Description |
-|--------|-------------|
-| **ReNgGinaNg Recommended** | Full reconnaissance pipeline |
-| **Full Scan** | All tools enabled, thorough scanning |
-| **Subdomain Discovery** | Subdomain enumeration only |
-| **OSINT** | Open-source intelligence gathering |
-| **Vulnerability Scan** | Nuclei-based vulnerability scanning |
+| Engine                     | Description                          |
+| -------------------------- | ------------------------------------ |
+| **ReNgGinaNg Recommended** | Full reconnaissance pipeline         |
+| **Full Scan**              | All tools enabled, thorough scanning |
+| **Subdomain Discovery**    | Subdomain enumeration only           |
+| **OSINT**                  | Open-source intelligence gathering   |
+| **Vulnerability Scan**     | Nuclei-based vulnerability scanning  |
 
 Custom engines can be created via **Scan Engine > Add Engine** using YAML configuration.
 
@@ -384,12 +386,14 @@ Custom engines can be created via **Scan Engine > Add Engine** using YAML config
 ### 5. Generating Reports
 
 #### Vulnerability Assessment Report
+
 1. Go to **Dashboard**
 2. Click **Generate VA Report**
 3. Select language (English / Bahasa Indonesia)
 4. Download PDF
 
 #### Threat Intelligence Report
+
 1. Go to **Threat Intel**
 2. Configure report settings (logo, document number, executive summary)
 3. Click **Generate Report**
@@ -415,45 +419,45 @@ graph LR
 
 ### Scan Operations
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/scan/start/<target_id>/` | Start a new scan |
-| GET | `/api/scan/status/<scan_id>/` | Get scan status |
-| POST | `/api/scan/stop/<scan_id>/` | Stop running scan |
-| GET | `/api/listScanHistory/` | List all scan history |
+| Method | Endpoint                       | Description           |
+| ------ | ------------------------------ | --------------------- |
+| POST   | `/api/scan/start/<target_id>/` | Start a new scan      |
+| GET    | `/api/scan/status/<scan_id>/`  | Get scan status       |
+| POST   | `/api/scan/stop/<scan_id>/`    | Stop running scan     |
+| GET    | `/api/listScanHistory/`        | List all scan history |
 
 ### Reconnaissance Data
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/querySubdomains/` | Query discovered subdomains |
-| GET | `/api/queryEndpoints/` | Query discovered endpoints |
-| GET | `/api/queryVulnerabilities/` | Query found vulnerabilities |
-| GET | `/api/listTechnologies/` | List detected technologies |
-| GET | `/api/listPorts/` | List discovered ports |
-| GET | `/api/listIPs/` | List discovered IP addresses |
+| Method | Endpoint                     | Description                  |
+| ------ | ---------------------------- | ---------------------------- |
+| GET    | `/api/querySubdomains/`      | Query discovered subdomains  |
+| GET    | `/api/queryEndpoints/`       | Query discovered endpoints   |
+| GET    | `/api/queryVulnerabilities/` | Query found vulnerabilities  |
+| GET    | `/api/listTechnologies/`     | List detected technologies   |
+| GET    | `/api/listPorts/`            | List discovered ports        |
+| GET    | `/api/listIPs/`              | List discovered IP addresses |
 
 ### Threat Intelligence
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/<slug>/threat-intel/refresh_all` | Refresh all domain threat data |
-| POST | `/<slug>/threat-intel/refresh_domain/<id>` | Refresh single domain |
-| GET | `/<slug>/threat-intel/scan_status` | Get refresh progress |
-| GET | `/<slug>/threat-intel/domain_detail/<id>` | Get full threat detail |
-| POST | `/<slug>/threat-intel/toggle_checked/<id>` | Mark/unmark a leaked credential as reviewed |
-| POST | `/<slug>/threat-intel/add_indicator` | Add a manual threat indicator |
-| POST | `/<slug>/threat-intel/delete_indicator/<id>` | Delete a manual indicator |
-| POST | `/<slug>/threat-intel/refresh_indicator/<id>` | Re-fetch threat data for a manual indicator |
-| GET | `/<slug>/threat-intel/indicator_detail/<id>` | Full detail for a manual indicator |
-| GET | `/<slug>/threat-intel/generate_report` | Generate TI report |
-| GET/POST | `/<slug>/threat-intel/report_settings` | Configure report settings |
+| Method   | Endpoint                                      | Description                                 |
+| -------- | --------------------------------------------- | ------------------------------------------- |
+| POST     | `/<slug>/threat-intel/refresh_all`            | Refresh all domain threat data              |
+| POST     | `/<slug>/threat-intel/refresh_domain/<id>`    | Refresh single domain                       |
+| GET      | `/<slug>/threat-intel/scan_status`            | Get refresh progress                        |
+| GET      | `/<slug>/threat-intel/domain_detail/<id>`     | Get full threat detail                      |
+| POST     | `/<slug>/threat-intel/toggle_checked/<id>`    | Mark/unmark a leaked credential as reviewed |
+| POST     | `/<slug>/threat-intel/add_indicator`          | Add a manual threat indicator               |
+| POST     | `/<slug>/threat-intel/delete_indicator/<id>`  | Delete a manual indicator                   |
+| POST     | `/<slug>/threat-intel/refresh_indicator/<id>` | Re-fetch threat data for a manual indicator |
+| GET      | `/<slug>/threat-intel/indicator_detail/<id>`  | Full detail for a manual indicator          |
+| GET      | `/<slug>/threat-intel/generate_report`        | Generate TI report                          |
+| GET/POST | `/<slug>/threat-intel/report_settings`        | Configure report settings                   |
 
 ---
 
 ## Project Structure
 
-```
+```text
 ReNgGinaNg/
 ├── config/
 │   └── nginx/              # Nginx reverse proxy config
@@ -484,6 +488,7 @@ ReNgGinaNg/
 ### Common Issues
 
 **Cannot access the web interface**
+
 ```bash
 # Check if all containers are running
 docker compose ps
@@ -496,16 +501,19 @@ make stop && make up
 ```
 
 **Database migration errors**
+
 ```bash
 docker compose exec web python3 manage.py migrate
 ```
 
 **Static files not loading**
+
 ```bash
 docker compose exec web python3 manage.py collectstatic --noinput
 ```
 
 **Celery workers not processing tasks**
+
 ```bash
 # Check celery logs
 docker compose logs celery
