@@ -24,7 +24,7 @@ from django.template.defaultfilters import slugify
 from startScan.models import *
 from targetApp.models import Domain
 from dashboard.models import *
-from reNgine.definitions import *
+from ReNgGinaNg.definitions import *
 from threatIntel.models import OTXThreatData, LeakCheckData, ThreatIntelScanStatus, ManualIndicator
 from threatIntel.views import _extract_iocs, _extract_cves, _fetch_otx_pulses, calculate_risk_score
 from dashboard.models import OTXAlienVaultAPIKey

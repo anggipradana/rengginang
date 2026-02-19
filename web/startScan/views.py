@@ -14,12 +14,12 @@ from django_celery_beat.models import (ClockedSchedule, IntervalSchedule, Period
 from rolepermissions.decorators import has_permission_decorator
 
 
-from reNgine.celery import app
-from reNgine.charts import *
-from reNgine.common_func import *
-from reNgine.definitions import ABORTED_TASK, SUCCESS_TASK
-from reNgine.tasks import create_scan_activity, initiate_scan, run_command
-from reNgine.llm import LLMReportEnricher
+from ReNgGinaNg.celery import app
+from ReNgGinaNg.charts import *
+from ReNgGinaNg.common_func import *
+from ReNgGinaNg.definitions import ABORTED_TASK, SUCCESS_TASK
+from ReNgGinaNg.tasks import create_scan_activity, initiate_scan, run_command
+from ReNgGinaNg.llm import LLMReportEnricher
 from scanEngine.models import EngineType, VulnerabilityReportSetting
 from startScan.models import *
 from targetApp.models import *

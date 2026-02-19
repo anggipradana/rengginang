@@ -10,6 +10,7 @@ apps=(
     "startScan"
     "dashboard"
     "recon_note"
+    "threatIntel"
 )
 
 create_migrations() {
@@ -186,8 +187,7 @@ echo 'alias httpx="/go/bin/httpx"' >> ~/.bashrc
 # TEMPORARY FIX, httpcore is causing issues with celery, removing it as temp fix
 #python3 -m pip uninstall -y httpcore
 
-# TEMPORARY FIX FOR langchain
-pip install tenacity==8.2.2
+# tenacity is now in requirements.txt (needed by langchain)
 
 loglevel='info'
 if [ "$DEBUG" == "1" ]; then
