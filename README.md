@@ -131,10 +131,13 @@ Example scenarios (4 domains):
 | `/<slug>/threat-intel/refresh_domain/<id>` | POST | Refresh single domain |
 | `/<slug>/threat-intel/scan_status` | GET | Polling endpoint for scan progress |
 | `/<slug>/threat-intel/domain_detail/<id>` | GET | Full threat data for a domain |
-| `/<slug>/threat-intel/manual-indicators/` | GET/POST | Manual indicator management |
-| `/<slug>/threat-intel/generate-report/` | POST | Generate TI PDF report |
-| `/<slug>/threat-intel/download-report/` | GET | Download generated PDF |
-| `/<slug>/threat-intel/report-settings/` | GET/POST | Configure report settings |
+| `/<slug>/threat-intel/toggle_checked/<id>` | POST | Mark/unmark a leaked credential as reviewed |
+| `/<slug>/threat-intel/add_indicator` | POST | Add a manual threat indicator |
+| `/<slug>/threat-intel/delete_indicator/<id>` | POST | Delete a manual indicator |
+| `/<slug>/threat-intel/refresh_indicator/<id>` | POST | Re-fetch threat data for a manual indicator |
+| `/<slug>/threat-intel/indicator_detail/<id>` | GET | Full detail for a manual indicator |
+| `/<slug>/threat-intel/generate_report` | GET | Generate TI PDF report |
+| `/<slug>/threat-intel/report_settings` | GET/POST | Configure report settings |
 
 ---
 
@@ -438,9 +441,13 @@ graph LR
 | POST | `/<slug>/threat-intel/refresh_domain/<id>` | Refresh single domain |
 | GET | `/<slug>/threat-intel/scan_status` | Get refresh progress |
 | GET | `/<slug>/threat-intel/domain_detail/<id>` | Get full threat detail |
-| POST | `/<slug>/threat-intel/manual-indicators/` | Add manual indicator |
-| POST | `/<slug>/threat-intel/generate-report/` | Generate TI report |
-| GET | `/<slug>/threat-intel/download-report/` | Download TI report PDF |
+| POST | `/<slug>/threat-intel/toggle_checked/<id>` | Mark/unmark a leaked credential as reviewed |
+| POST | `/<slug>/threat-intel/add_indicator` | Add a manual threat indicator |
+| POST | `/<slug>/threat-intel/delete_indicator/<id>` | Delete a manual indicator |
+| POST | `/<slug>/threat-intel/refresh_indicator/<id>` | Re-fetch threat data for a manual indicator |
+| GET | `/<slug>/threat-intel/indicator_detail/<id>` | Full detail for a manual indicator |
+| GET | `/<slug>/threat-intel/generate_report` | Generate TI report |
+| GET/POST | `/<slug>/threat-intel/report_settings` | Configure report settings |
 
 ---
 
