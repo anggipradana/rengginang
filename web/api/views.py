@@ -3,7 +3,6 @@ import socket
 import logging
 import requests
 import validators
-import requests
 
 from ipaddress import IPv4Network
 from django.db.models import CharField, Count, F, Q, Value

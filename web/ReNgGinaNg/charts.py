@@ -1,5 +1,4 @@
 import base64
-import colorsys
 
 import plotly.graph_objs as go
 from plotly.io import to_image
