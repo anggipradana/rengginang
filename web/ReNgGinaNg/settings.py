@@ -22,7 +22,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, os.pardir, '.env'))
 
 # Root env vars
 RENGGINANG_HOME = env('RENGGINANG_HOME', default='/usr/src/app')
-RENGGINANG_RESULTS = env('RENGGINANG_RESULTS', default=f'{RENGGINANG_HOME}/scan_results')
+RENGGINANG_RESULTS = env('RENGGINANG_RESULTS', default='/usr/src/scan_results')
 RENGGINANG_CACHE_ENABLED = env.bool('RENGGINANG_CACHE_ENABLED', default=False)
 RENGGINANG_RECORD_ENABLED = env.bool('RENGGINANG_RECORD_ENABLED', default=True)
 RENGGINANG_RAISE_ON_ERROR = env.bool('RENGGINANG_RAISE_ON_ERROR', default=False)

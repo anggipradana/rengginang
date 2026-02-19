@@ -239,8 +239,7 @@ def all_subdomains(request, slug):
 
 def detail_vuln_scan(request, slug, id=None):
     if id:
-        history = get_object_or_404(ScanHistory, id=id)
-        history.filter(domain__project__slug=slug)
+        history = get_object_or_404(ScanHistory, id=id, domain__project__slug=slug)
         context = {'scan_history_id': id, 'history': history}
     else:
         context = {'vuln_scan_active': 'true'}
@@ -537,7 +536,7 @@ def stop_scan(request, id):
                 f'Scan failed to stop ! Error: {str(e)}'
             )
         return JsonResponse(response)
-    return scan_history(request)
+    return HttpResponse('Method not allowed', status=405)
 
 
 @has_permission_decorator(PERM_INITATE_SCANS_SUBSCANS, redirect_url=FOUR_OH_FOUR_URL)

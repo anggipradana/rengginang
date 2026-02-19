@@ -69,7 +69,7 @@ then
   mkdir /usr/src/wordlist
 fi
 
-if [ ! -f "/usr/src/wordlist/" ]
+if [ ! -f "/usr/src/wordlist/dicc.txt" ]
 then
   echo "Downloading Default Directory Bruteforce Wordlist"
   wget https://raw.githubusercontent.com/maurosoria/dirsearch/master/db/dicc.txt -O /usr/src/wordlist/dicc.txt

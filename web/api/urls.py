@@ -81,10 +81,6 @@ urlpatterns = [
         ListDorkTypes.as_view(),
         name='queryDorkTypes'),
     path(
-        'queryDorkTypes/',
-        ListDorkTypes.as_view(),
-        name='queryDorkTypes'),
-    path(
         'queryAllScanResultVisualise/',
         VisualiseData.as_view(),
         name='queryAllScanResultVisualise'),

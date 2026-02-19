@@ -27,7 +27,7 @@ urlpatterns = [
         views.all_subdomains,
         name='all_subdomains'),
     path(
-        'detail/vuln/<int:id>',
+        '<slug:slug>/detail/vuln/<int:id>',
         views.detail_vuln_scan,
         name='detail_vuln_scan'),
     path(

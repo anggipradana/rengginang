@@ -4,9 +4,9 @@ FROM ubuntu:22.04
 ARG GECKOVERSION=0.33.0
 ARG GOVERSION=1.21.5
 
-RUN ARCH=$(dpkg --print-architecture) \ 
-    && if [ "${ARCH}" ! "arm64" ] || [ "${ARCH}" ! "amd64" ]; then \
-      echo "ReNgGinaNg not supported, encountered unknown architecture: ${TARGETPLATFORM}" \
+RUN ARCH=$(dpkg --print-architecture) \
+    && if [ "${ARCH}" != "arm64" ] && [ "${ARCH}" != "amd64" ]; then \
+      echo "ReNgGinaNg not supported, encountered unknown architecture: ${ARCH}" \
       && exit 1; \
     fi
 

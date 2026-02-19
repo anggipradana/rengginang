@@ -1,4 +1,4 @@
-include .env
+-include .env
 .DEFAULT_GOAL:=help
 
 # Credits: https://github.com/sherifabdlnaby/elastdocker/
