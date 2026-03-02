@@ -4901,7 +4901,7 @@ def save_subdomain(subdomain_name, ctx={}, skip_scope_check=False):
 
 	if ctx.get('domain_id'):
 		domain = Domain.objects.get(id=ctx.get('domain_id'))
-		if domain.name not in subdomain_name:
+		if get_domain_from_subdomain(domain.name) not in subdomain_name:
 			logger.error(f"{subdomain_name} is not a subdomain of domain {domain.name}. Skipping.")
 			return None, False
 
