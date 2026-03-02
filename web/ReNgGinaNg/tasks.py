@@ -1368,9 +1368,13 @@ def port_scan(self, hosts=[], ctx={}, description=None):
 			exclude_subdomains=exclude_subdomains,
 			ctx=ctx)
 
+	if not hosts:
+		logger.warning('No subdomains found for port scan. Skipping.')
+		return []
+
 	# Build cmd
 	cmd = 'naabu -json -exclude-cdn'
-	cmd += f' -list {input_file}' if len(hosts) > 0 else f' -host {hosts[0]}'
+	cmd += f' -list {input_file}'
 	if 'full' in ports or 'all' in ports:
 		ports_str = ' -p "-"'
 	elif 'top-100' in ports:
