@@ -2182,11 +2182,8 @@ def nuclei_individual_severity_module(self, cmd, severity, enable_http_crawl, sh
 		http_url = sanitize_url(line.get('matched-at'))
 		subdomain_name = get_subdomain_from_url(http_url)
 
-		# Skip results for subdomains outside the target domain or out-of-scope
-		if self.domain and self.domain.name not in subdomain_name:
-			continue
-		scope_checker = SubdomainScopeChecker(self.out_of_scope_subdomains)
-		if scope_checker.is_out_of_scope(subdomain_name):
+		# Skip results for subdomains outside the target domain
+		if self.domain and get_domain_from_subdomain(self.domain.name) not in subdomain_name:
 			continue
 
 		# Only attach to existing subdomains; create if it belongs to this scan
