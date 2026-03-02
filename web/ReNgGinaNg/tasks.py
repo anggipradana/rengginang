@@ -2096,67 +2096,50 @@ def vulnerability_scan(self, urls=[], ctx={}, description=None):
 	"""
 	logger.info('Running Vulnerability Scan Queue')
 	config = self.yaml_configuration.get(VULNERABILITY_SCAN) or {}
-	should_run_nuclei = config.get(RUN_NUCLEI, True)
-	should_run_crlfuzz = config.get(RUN_CRLFUZZ, False)
-	should_run_dalfox = config.get(RUN_DALFOX, False)
-	should_run_s3scanner = config.get(RUN_S3SCANNER, False)
 
-	grouped_tasks = []
-	if should_run_nuclei:
-		_task = nuclei_scan.si(
-			urls=urls,
-			ctx=ctx,
-			description=f'Nuclei Scan'
-		)
-		grouped_tasks.append(_task)
+	# Run each scanner sequentially using .apply() (eager/local execution).
+	# This avoids dispatching subtasks to main_scan_queue which causes a
+	# greenlet-slot deadlock: vulnerability_scan + nuclei_scan each occupy
+	# a slot via busy-wait, leaving zero slots for severity modules / wpscan.
 
-	if should_run_crlfuzz:
-		_task = crlfuzz_scan.si(
-			urls=urls,
-			ctx=ctx,
-			description=f'CRLFuzz Scan'
-		)
-		grouped_tasks.append(_task)
+	if config.get(RUN_NUCLEI, True):
+		logger.info('Starting Nuclei scan...')
+		nuclei_scan.apply(kwargs={
+			'urls': urls,
+			'ctx': dict(ctx),
+			'description': 'Nuclei Scan'
+		})
 
-	if should_run_dalfox:
-		_task = dalfox_xss_scan.si(
-			urls=urls,
-			ctx=ctx,
-			description=f'Dalfox XSS Scan'
-		)
-		grouped_tasks.append(_task)
+	if config.get(RUN_CRLFUZZ, False):
+		logger.info('Starting CRLFuzz scan...')
+		crlfuzz_scan.apply(kwargs={
+			'urls': urls,
+			'ctx': dict(ctx),
+			'description': 'CRLFuzz Scan'
+		})
 
-	if should_run_s3scanner:
-		_task = s3scanner.si(
-			ctx=ctx,
-			description=f'Misconfigured S3 Buckets Scanner'
-		)
-		grouped_tasks.append(_task)
+	if config.get(RUN_DALFOX, False):
+		logger.info('Starting Dalfox XSS scan...')
+		dalfox_xss_scan.apply(kwargs={
+			'urls': urls,
+			'ctx': dict(ctx),
+			'description': 'Dalfox XSS Scan'
+		})
 
-	should_run_wpscan = config.get(RUN_WPSCAN, True)
-	if should_run_wpscan:
-		_task = wpscan_scan.si(
-			urls=urls,
-			ctx=ctx,
-			description='WPScan WordPress Scan'
-		)
-		grouped_tasks.append(_task)
+	if config.get(RUN_S3SCANNER, False):
+		logger.info('Starting S3Scanner...')
+		s3scanner.apply(kwargs={
+			'ctx': dict(ctx),
+			'description': 'Misconfigured S3 Buckets Scanner'
+		})
 
-	celery_group = group(grouped_tasks)
-	job = celery_group.apply_async()
-
-	# scan_timeout (minutes) controls overall vuln scan wait; 0 = no limit.
-	# NOTE: config['timeout'] is the per-request HTTP timeout for nuclei — do NOT reuse it here.
-	scan_timeout_minutes = config.get('scan_timeout', 0)
-	max_wait = scan_timeout_minutes * 60 if scan_timeout_minutes > 0 else 0
-	elapsed = 0
-	while not job.ready():
-		if max_wait and elapsed >= max_wait:
-			logger.warning(f'Vulnerability scan timed out after {elapsed}s. Revoking pending tasks.')
-			job.revoke(terminate=True)
-			break
-		time.sleep(5)
-		elapsed += 5
+	if config.get(RUN_WPSCAN, True):
+		logger.info('Starting WPScan...')
+		wpscan_scan.apply(kwargs={
+			'urls': urls,
+			'ctx': dict(ctx),
+			'description': 'WPScan WordPress Scan'
+		})
 
 	logger.info('Vulnerability scan completed...')
 
@@ -2565,27 +2548,18 @@ def nuclei_scan(self, urls=[], ctx={}, description=None):
 		cmd += f' -t {tpl}'
 
 
-	grouped_tasks = []
-	custom_ctx = ctx
+	# Run each severity level sequentially using .apply() (eager/local).
+	# Previously used chain().apply_async() + busy-wait which required an
+	# extra greenlet slot on main_scan_worker, causing deadlocks.
 	for severity in severities:
-		custom_ctx['track'] = True
-		_task = nuclei_individual_severity_module.si(
-			cmd,
-			severity,
-			enable_http_crawl,
-			should_fetch_gpt_report,
-			ctx=custom_ctx,
-			description=f'Nuclei Scan with severity {severity}'
+		logger.info(f'Running nuclei severity: {severity}')
+		nuclei_individual_severity_module.apply(
+			args=[cmd, severity, enable_http_crawl, should_fetch_gpt_report],
+			kwargs={
+				'ctx': dict(ctx),
+				'description': f'Nuclei Scan with severity {severity}'
+			}
 		)
-		grouped_tasks.append(_task)
-
-	# Run severities sequentially to avoid OOM kills when all run in parallel
-	celery_chain = chain(grouped_tasks)
-	job = celery_chain.apply_async()
-
-	while not job.ready():
-		# wait for all jobs to complete
-		time.sleep(5)
 
 	logger.info('Vulnerability scan with all severities completed...')
 
