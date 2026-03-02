@@ -734,10 +734,6 @@
                 </div>
                 {% endif %}
                 <div class="cover-meta-row">
-                    <div class="cover-meta-label">{{ labels.target }}</div>
-                    <div class="cover-meta-value">{{ scan_object.domain.name }}</div>
-                </div>
-                <div class="cover-meta-row">
                     <div class="cover-meta-label">{{ labels.date }}</div>
                     <div class="cover-meta-value">{% now "F j, Y" %}</div>
                 </div>
@@ -914,6 +910,23 @@
                 <img class="center-img"
                      src="data:image/png;base64,{{ vulns_severity_chart }}" />
             {% endif %}
+            <h3 class="primary">{{ labels.subdomains }} ({{ subdomains.count }})</h3>
+            <div class="interesting-subdomain-table-container">
+                <table class="interesting-subdomain-table">
+                    <tr>
+                        <th class="number-td">#</th>
+                        <th class="interesting-subdomain-td">{{ labels.subdomain }}</th>
+                        <th class="status-td">{{ labels.http_status }}</th>
+                    </tr>
+                    {% for subdomain in subdomains %}
+                        <tr class="{% if subdomain.http_status >= 200 and subdomain.http_status < 300 %} low-td {% elif subdomain.http_status >= 300 and subdomain.http_status < 400 %} medium-td {% elif subdomain.http_status >= 400 and subdomain.http_status < 500 %} high-td {% else %} unknown-td {% endif %}">
+                            <td class="number-td">{{ forloop.counter }}</td>
+                            <td class="subdomain-name-td">{{ subdomain.name }}</td>
+                            <td class="status-td">{% if subdomain.http_status %}{{ subdomain.http_status }}{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </article>
         {% if show_vuln %}
             <article style="page-break-before: always;">
