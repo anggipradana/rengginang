@@ -154,8 +154,9 @@ def initiate_scan(
 
 		# Create initial subdomain in DB: make a copy of domain as a subdomain so
 		# that other tasks using subdomains can use it.
+		# Always skip scope check — the target domain itself must never be filtered.
 		subdomain_name = domain.name
-		subdomain, _ = save_subdomain(subdomain_name, ctx=ctx)
+		subdomain, _ = save_subdomain(subdomain_name, ctx=ctx, skip_scope_check=True)
 
 		# If enable_http_crawl is set, create an initial root HTTP endpoint so that
 		# HTTP crawling can start somewhere
