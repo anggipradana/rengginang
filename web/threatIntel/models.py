@@ -82,6 +82,7 @@ class ManualIndicator(models.Model):
 
 class ThreatIntelReportSetting(models.Model):
 	id = models.AutoField(primary_key=True)
+	project = models.OneToOneField(Project, on_delete=models.CASCADE, null=True, blank=True)
 	primary_color = models.CharField(max_length=10, null=True, blank=True, default='#1A237E')
 	secondary_color = models.CharField(max_length=10, null=True, blank=True, default='#0D1B2A')
 	company_name = models.CharField(max_length=100, null=True, blank=True)
@@ -100,4 +101,4 @@ class ThreatIntelReportSetting(models.Model):
 	)
 
 	def __str__(self):
-		return f'Threat Intel Report Settings'
+		return f'TI Report Settings ({self.project.name})' if self.project else 'TI Report Settings (global)'

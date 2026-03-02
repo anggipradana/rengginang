@@ -1131,8 +1131,10 @@ def generate_threat_report(request, slug):
 	"""Generate Threat Intelligence Report (Banking) as PDF."""
 	project = get_object_or_404(Project, slug=slug)
 
-	# Get report settings
-	report_settings = ThreatIntelReportSetting.objects.first()
+	# Get report settings (per-project, fallback to global)
+	report_settings = ThreatIntelReportSetting.objects.filter(project=project).first()
+	if not report_settings:
+		report_settings = ThreatIntelReportSetting.objects.filter(project__isnull=True).first()
 	primary_color = report_settings.primary_color if report_settings else '#1A237E'
 	secondary_color = report_settings.secondary_color if report_settings else '#0D1B2A'
 
@@ -1267,12 +1269,13 @@ def generate_threat_report(request, slug):
 # ──────────────────────────────────────
 
 def threat_report_settings(request, slug):
-	"""Threat Intel report settings page."""
-	settings_obj = ThreatIntelReportSetting.objects.first()
+	"""Threat Intel report settings page (per-project)."""
+	project = get_object_or_404(Project, slug=slug)
+	settings_obj = ThreatIntelReportSetting.objects.filter(project=project).first()
 
 	if request.method == 'POST':
 		if not settings_obj:
-			settings_obj = ThreatIntelReportSetting()
+			settings_obj = ThreatIntelReportSetting(project=project)
 
 		settings_obj.primary_color = request.POST.get('primary_color', '#1A237E')
 		settings_obj.secondary_color = request.POST.get('secondary_color', '#0D1B2A')
@@ -1299,7 +1302,7 @@ def threat_report_settings(request, slug):
 
 	context = {
 		'settings_nav_active': 'active',
-		'project': get_object_or_404(Project, slug=slug),
+		'project': project,
 		'settings_obj': settings_obj,
 		'primary_color': settings_obj.primary_color if settings_obj else '#1A237E',
 		'secondary_color': settings_obj.secondary_color if settings_obj else '#0D1B2A',
