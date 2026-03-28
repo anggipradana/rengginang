@@ -122,8 +122,14 @@ class UserPreferences(models.Model):
 
 
 class ReportSignatory(models.Model):
+	ROLE_CHOICES = [
+		('prepared', 'Disusun Oleh / Prepared By'),
+		('reviewed', 'Diketahui Oleh / Reviewed By'),
+		('approved', 'Disahkan Oleh / Approved By'),
+	]
 	id = models.AutoField(primary_key=True)
 	project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='signatories')
+	role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='prepared')
 	name = models.CharField(max_length=200)
 	position = models.CharField(max_length=200)
 	signature_image = models.ImageField(upload_to='report_signatures/', null=True, blank=True)
@@ -133,4 +139,12 @@ class ReportSignatory(models.Model):
 		ordering = ['order']
 
 	def __str__(self):
-		return f'{self.name} - {self.position}'
+		return f'{self.get_role_display()} - {self.name}'
+
+	@property
+	def role_label_id(self):
+		return {'prepared': 'Disusun Oleh', 'reviewed': 'Diketahui Oleh', 'approved': 'Disahkan Oleh'}.get(self.role, self.role)
+
+	@property
+	def role_label_en(self):
+		return {'prepared': 'Prepared By', 'reviewed': 'Reviewed By', 'approved': 'Approved By'}.get(self.role, self.role)

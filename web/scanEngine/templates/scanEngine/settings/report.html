@@ -163,20 +163,29 @@ ReNgGinaNg PDF Report Settings
           </div>
           <input type="submit" value="Save Report Settings" class="btn btn-primary float-end mt-2">
         </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-        <hr class="mt-4">
-        <h4 class="header-title mt-3">Report Signatories (Lembar Pengesahan)</h4>
-        <p>Add up to 3 people who will sign the report approval page. Signature image upload is optional.</p>
+<!-- Report Signatories (separate card) -->
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="header-title">Report Signatories (Lembar Pengesahan)</h4>
+        <p>Add up to 3 people who will sign the report approval page. Each signatory has a role (Disusun/Diketahui/Disahkan), name, position, and optional signature image.</p>
 
         <div id="signatories-list" class="mb-3">
           {% for sig in signatories %}
           <div class="d-flex align-items-center justify-content-between border rounded p-2 mb-2" id="sig-row-{{sig.id}}">
             <div>
+              <span class="badge bg-primary me-1">{{sig.get_role_display}}</span>
               <strong>{{sig.name}}</strong> — {{sig.position}}
               {% if sig.signature_image %}
                 <img src="{{sig.signature_image.url}}" alt="signature" style="max-height:30px; max-width:100px; margin-left:10px;">
               {% else %}
-                <span class="text-muted ms-2">(no signature uploaded)</span>
+                <span class="text-muted ms-2">(no signature)</span>
               {% endif %}
             </div>
             <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSignatory({{sig.id}})">Delete</button>
@@ -188,15 +197,23 @@ ReNgGinaNg PDF Report Settings
         <form id="add-signatory-form" enctype="multipart/form-data" class="border rounded p-3">
           {% csrf_token %}
           <div class="row">
-            <div class="col-md-4 mt-2">
+            <div class="col-md-3 mt-2">
+              <label class="form-label">Role</label>
+              <select class="form-control" name="role" id="sig-role">
+                <option value="prepared">Disusun Oleh / Prepared By</option>
+                <option value="reviewed">Diketahui Oleh / Reviewed By</option>
+                <option value="approved">Disahkan Oleh / Approved By</option>
+              </select>
+            </div>
+            <div class="col-md-3 mt-2">
               <label class="form-label">Name</label>
               <input type="text" class="form-control" name="name" id="sig-name" required placeholder="Full Name">
             </div>
-            <div class="col-md-4 mt-2">
+            <div class="col-md-3 mt-2">
               <label class="form-label">Position / Title</label>
               <input type="text" class="form-control" name="position" id="sig-position" required placeholder="e.g. IT Security Manager">
             </div>
-            <div class="col-md-4 mt-2">
+            <div class="col-md-3 mt-2">
               <label class="form-label">Signature Image (optional)</label>
               <input type="file" class="form-control" name="signature_image" id="sig-image" accept="image/*">
             </div>

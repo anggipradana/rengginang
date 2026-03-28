@@ -480,12 +480,15 @@ def manage_signatories(request, slug):
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
         position = request.POST.get('position', '').strip()
+        role = request.POST.get('role', 'prepared').strip()
         if not name or not position:
             return JsonResponse({'status': False, 'error': 'Name and position are required.'})
+        if role not in ('prepared', 'reviewed', 'approved'):
+            role = 'prepared'
         count = ReportSignatory.objects.filter(project=project).count()
         if count >= 3:
             return JsonResponse({'status': False, 'error': 'Maximum 3 signatories allowed.'})
-        sig = ReportSignatory(project=project, name=name, position=position, order=count)
+        sig = ReportSignatory(project=project, name=name, position=position, role=role, order=count)
         if 'signature_image' in request.FILES:
             sig.signature_image = request.FILES['signature_image']
         sig.save()
