@@ -15,8 +15,9 @@ from ReNgGinaNg.common_func import *
 from ReNgGinaNg.tasks import (run_command, send_discord_message, send_slack_message, send_lark_message, send_telegram_message, send_google_chat_message)
 from scanEngine.forms import *
 from scanEngine.forms import ConfigurationForm
-from dashboard.models import Project
+from dashboard.models import Project, ReportSignatory
 from scanEngine.models import *
+from django.http import JsonResponse
 
 
 def index(request, slug):
@@ -457,6 +458,7 @@ def report_settings(request, slug):
     context['secondary_color'] = secondary_color
     if report and report.company_logo:
         context['existing_logo'] = report.company_logo
+    context['signatories'] = ReportSignatory.objects.filter(project=project)
     return render(request, 'scanEngine/settings/report.html', context)
 
 
@@ -469,6 +471,44 @@ def delete_logo(request, slug):
             report.company_logo.delete(save=True)
             messages.add_message(request, messages.INFO, 'Logo deleted successfully.')
     return http.HttpResponseRedirect(reverse('report_settings', kwargs={'slug': slug}))
+
+
+@has_permission_decorator(PERM_MODIFY_SCAN_REPORT, redirect_url=FOUR_OH_FOUR_URL)
+def manage_signatories(request, slug):
+    """Add a report signatory (AJAX POST)."""
+    project = get_object_or_404(Project, slug=slug)
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        position = request.POST.get('position', '').strip()
+        if not name or not position:
+            return JsonResponse({'status': False, 'error': 'Name and position are required.'})
+        count = ReportSignatory.objects.filter(project=project).count()
+        if count >= 3:
+            return JsonResponse({'status': False, 'error': 'Maximum 3 signatories allowed.'})
+        sig = ReportSignatory(project=project, name=name, position=position, order=count)
+        if 'signature_image' in request.FILES:
+            sig.signature_image = request.FILES['signature_image']
+        sig.save()
+        return JsonResponse({
+            'status': True,
+            'id': sig.id,
+            'name': sig.name,
+            'position': sig.position,
+            'has_signature': bool(sig.signature_image),
+            'signature_url': sig.signature_image.url if sig.signature_image else '',
+        })
+    return JsonResponse({'status': False, 'error': 'POST only.'})
+
+
+@has_permission_decorator(PERM_MODIFY_SCAN_REPORT, redirect_url=FOUR_OH_FOUR_URL)
+def delete_signatory(request, slug, id):
+    """Delete a report signatory (AJAX POST)."""
+    project = get_object_or_404(Project, slug=slug)
+    if request.method == 'POST':
+        sig = get_object_or_404(ReportSignatory, id=id, project=project)
+        sig.delete()
+        return JsonResponse({'status': True})
+    return JsonResponse({'status': False, 'error': 'POST only.'})
 
 
 @has_permission_decorator(PERM_MODIFY_SYSTEM_CONFIGURATIONS, redirect_url=FOUR_OH_FOUR_URL)

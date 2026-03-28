@@ -89,4 +89,12 @@ urlpatterns = [
         '<slug:slug>/delete_logo',
         views.delete_logo,
         name='delete_logo'),
+    path(
+        '<slug:slug>/signatories',
+        views.manage_signatories,
+        name='manage_signatories'),
+    path(
+        '<slug:slug>/signatories/delete/<int:id>',
+        views.delete_signatory,
+        name='delete_signatory'),
 ]

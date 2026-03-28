@@ -1251,6 +1251,9 @@ def generate_threat_report(request, slug):
 	if report_settings and report_settings.company_logo:
 		data['company_logo_path'] = report_settings.company_logo.path
 
+	from dashboard.models import ReportSignatory
+	data['signatories'] = ReportSignatory.objects.filter(project=project)
+
 	template = get_template('threatIntel/report_banking.html')
 	html = template.render(data)
 	pdf = HTML(string=html).write_pdf()
@@ -1300,11 +1303,13 @@ def threat_report_settings(request, slug):
 		from django.urls import reverse
 		return http.HttpResponseRedirect(reverse('threat_report_settings', kwargs={'slug': slug}))
 
+	from dashboard.models import ReportSignatory
 	context = {
 		'settings_nav_active': 'active',
 		'project': project,
 		'settings_obj': settings_obj,
 		'primary_color': settings_obj.primary_color if settings_obj else '#1A237E',
 		'secondary_color': settings_obj.secondary_color if settings_obj else '#0D1B2A',
+		'signatories': ReportSignatory.objects.filter(project=project),
 	}
 	return render(request, 'threatIntel/report_settings.html', context)

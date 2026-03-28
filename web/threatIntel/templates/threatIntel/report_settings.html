@@ -144,6 +144,50 @@ Threat Intel Report Settings
 
           <input type="submit" value="Save Report Settings" class="btn btn-primary float-end mt-2">
         </form>
+
+        <hr class="mt-4">
+        <h4 class="header-title mt-3">Report Signatories (Lembar Pengesahan)</h4>
+        <p>Add up to 3 people who will sign the report approval page. Signature image upload is optional.</p>
+
+        <div id="signatories-list" class="mb-3">
+          {% for sig in signatories %}
+          <div class="d-flex align-items-center justify-content-between border rounded p-2 mb-2" id="sig-row-{{sig.id}}">
+            <div>
+              <strong>{{sig.name}}</strong> — {{sig.position}}
+              {% if sig.signature_image %}
+                <img src="{{sig.signature_image.url}}" alt="signature" style="max-height:30px; max-width:100px; margin-left:10px;">
+              {% else %}
+                <span class="text-muted ms-2">(no signature uploaded)</span>
+              {% endif %}
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSignatory({{sig.id}})">Delete</button>
+          </div>
+          {% endfor %}
+        </div>
+
+        {% if signatories.count < 3 %}
+        <form id="add-signatory-form" enctype="multipart/form-data" class="border rounded p-3">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-4 mt-2">
+              <label class="form-label">Name</label>
+              <input type="text" class="form-control" name="name" id="sig-name" required placeholder="Full Name">
+            </div>
+            <div class="col-md-4 mt-2">
+              <label class="form-label">Position / Title</label>
+              <input type="text" class="form-control" name="position" id="sig-position" required placeholder="e.g. IT Security Manager">
+            </div>
+            <div class="col-md-4 mt-2">
+              <label class="form-label">Signature Image (optional)</label>
+              <input type="file" class="form-control" name="signature_image" id="sig-image" accept="image/*">
+            </div>
+          </div>
+          <button type="submit" class="btn btn-sm btn-primary mt-3">Add Signatory</button>
+        </form>
+        {% else %}
+        <p class="text-muted">Maximum 3 signatories reached. Delete one to add a new one.</p>
+        {% endif %}
+
       </div>
     </div>
   </div>
@@ -197,5 +241,46 @@ secondary_pickr.on('save', (color, instance) => {
   secondary_pickr.setColor(color.toHEXA().toString(0));
   document.getElementById("secondary_color").value = secondary_pickr.getColor().toHEXA().toString(0);
 });
+
+// Signatory management (shared with VA settings - uses scanEngine URLs)
+const sigForm = document.getElementById('add-signatory-form');
+if (sigForm) {
+  sigForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    fetch("/scanEngine/{{ project.slug }}/signatories", {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-CSRFToken': formData.get('csrfmiddlewaretoken') }
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.status) {
+        location.reload();
+      } else {
+        alert(data.error || 'Failed to add signatory.');
+      }
+    });
+  });
+}
+
+function deleteSignatory(id) {
+  if (!confirm('Delete this signatory?')) return;
+  fetch(`/scanEngine/{{ project.slug }}/signatories/delete/${id}`, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': '{{ csrf_token }}',
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.status) {
+      document.getElementById(`sig-row-${id}`).remove();
+    } else {
+      alert(data.error || 'Failed to delete.');
+    }
+  });
+}
 </script>
 {% endblock page_level_script %}

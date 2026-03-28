@@ -116,6 +116,21 @@ class InAppNotification(models.Model):
 class UserPreferences(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	bug_bounty_mode = models.BooleanField(default=True)
-	
+
 	def __str__(self):
 		return f"{self.user.username}'s preferences"
+
+
+class ReportSignatory(models.Model):
+	id = models.AutoField(primary_key=True)
+	project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='signatories')
+	name = models.CharField(max_length=200)
+	position = models.CharField(max_length=200)
+	signature_image = models.ImageField(upload_to='report_signatures/', null=True, blank=True)
+	order = models.PositiveIntegerField(default=0)
+
+	class Meta:
+		ordering = ['order']
+
+	def __str__(self):
+		return f'{self.name} - {self.position}'

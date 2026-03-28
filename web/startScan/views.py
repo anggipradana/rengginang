@@ -1062,6 +1062,7 @@ REPORT_LABELS = {
         'vulnerability_report': 'Vulnerability Report',
         'reconnaissance_report': 'Reconnaissance Report',
         'vulnerability_assessment_report': 'Vulnerability Assessment Report',
+        'approval_sheet': 'Approval Sheet',
     },
     'id': {
         'executive_summary': 'Ringkasan Eksekutif',
@@ -1142,6 +1143,7 @@ REPORT_LABELS = {
         'vulnerability_report': 'Laporan Kerentanan',
         'reconnaissance_report': 'Laporan Rekognisi',
         'vulnerability_assessment_report': 'Laporan Penilaian Kerentanan',
+        'approval_sheet': 'Lembar Pengesahan',
     },
 }
 
@@ -1338,6 +1340,9 @@ def create_report(request, id):
 
     data['subdomain_http_status_chart'] = generate_subdomain_chart_by_http_status(subdomains)
     data['vulns_severity_chart'] = generate_vulnerability_chart_by_severity(vulns) if vulns else ''
+
+    from dashboard.models import ReportSignatory
+    data['signatories'] = ReportSignatory.objects.filter(project=scan.domain.project)
 
     if report_template == 'modern':
         template = get_template('report/modern.html')

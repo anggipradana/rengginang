@@ -1066,6 +1066,32 @@
       {% endif %}
 
     {% endif %}
+    {% if signatories %}
+    <article id="approval-sheet" style="page-break-before: always;">
+      <h2 id="chapter-title">{{ labels.approval_sheet }}</h2>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 10mm;">
+        <tr>
+          {% for sig in signatories %}
+          <th style="text-align: center; padding: 5mm; border: 1px solid #ccc; background: #f5f5f5;">{{ sig.position }}</th>
+          {% endfor %}
+        </tr>
+        <tr>
+          {% for sig in signatories %}
+          <td style="text-align: center; padding: 8mm 5mm; border: 1px solid #ccc; height: 35mm; vertical-align: middle;">
+            {% if sig.signature_image %}
+            <img src="file://{{ sig.signature_image.path }}" style="max-height: 25mm; max-width: 50mm;">
+            {% endif %}
+          </td>
+          {% endfor %}
+        </tr>
+        <tr>
+          {% for sig in signatories %}
+          <td style="text-align: center; padding: 3mm; border: 1px solid #ccc; font-weight: bold;">{{ sig.name }}</td>
+          {% endfor %}
+        </tr>
+      </table>
+    </article>
+    {% endif %}
     <article id="chapter">
       <h2 id="chapter-title">END OF REPORT</h2>
     </article>
